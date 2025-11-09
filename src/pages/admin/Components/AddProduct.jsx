@@ -57,7 +57,7 @@ const AddProduct = () => {
           <label htmlFor="image">
             <Image className='mt-1 cursor-pointer' src={!image ? assets.upload_area : URL.createObjectURL(image)} alt='' width={140} height={70} />
           </label>
-          <input onChange={(e) => setImage(e.target.files[0])} type="file" id='image'/>
+          <input onChange={(e) => setImage(e.target.files[0])} type="file" id='image' hidden/>
         </div>
         <input className="w-full sm:w-[500px] mt-2 px-4 py-3 border" name='tourname' onChange={onChangeHandler} value={data.tourname} type="text" placeholder='Tour Name' required />
         <textarea className="w-full sm:w-[500px] mt-2 px-4 py-3 border" type="text" name='description' onChange={onChangeHandler} value={data.description} placeholder='Tour Description' required />

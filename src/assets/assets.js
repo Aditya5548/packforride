@@ -14,17 +14,18 @@ import blog_pic_13 from './blog_pic_13.png';
 import blog_pic_14 from './blog_pic_14.png';
 import blog_pic_15 from './blog_pic_15.png';
 import blog_pic_16 from './blog_pic_16.png';
-import facebook_icon from './facebook_icon.png'
-import googleplus_icon from './googleplus_icon.png'
-import twitter_icon from './twitter_icon.png'
-import profile_icon from './profile_icon.png'
-import logo from './logo.png'
-import arrow from './arrow.png'
-import blog_icon from './blog_icon.png'
-import add_icon from './add_icon.png'
-import email_icon from './email_icon.png'
-import upload_area from './upload_area.png'
-import logout from './logout.png'
+import facebook_icon from './facebook_icon.png';
+import googleplus_icon from './googleplus_icon.png';
+import twitter_icon from './twitter_icon.png';
+import profile_icon from './profile_icon.png';
+import logo from './logo.png';
+import arrow from './arrow.png';
+import blog_icon from './blog_icon.png';
+import add_icon from './add_icon.png';
+import email_icon from './email_icon.png';
+import upload_area from './upload_area.png';
+import logout from './logout.png';
+import dropdown from './dropdown.png';
 
 export const assets = {
     facebook_icon,
@@ -37,7 +38,8 @@ export const assets = {
     add_icon,
     email_icon,
     upload_area,
-    logout
+    logout,
+    dropdown
     }
 
     export const blog_data = [{

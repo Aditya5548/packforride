@@ -17,8 +17,8 @@ const Bloglist = (data) => {
     <div>
       <div className='text-center my-10'>
         <h1 className='text-2xl sm:text-4xl font-medium'>Find Your Desire Journey</h1>
-        <p className='mt-5  md:max-w-[740px] m-auto text-xs px-10 sm:text-base'>Plan the perfect getaway with family and friends! Enjoy all-in-one travel packages — hotels, food, transport, and activities — designed for comfort, fun, and unforgettable memories.</p>
-        <form className='flex justify-between max-w-[500px] scale-75 sm:scale-100 mx-auto mt-5 border border-black'>
+        <p className='mt-5  md:max-w-[740px] m-auto text-xs px-10 sm:text-base'>Plan the perfect getaway with family and friends! Enjoy all-in-one travel packages, hotels, food, transport, and activities ,designed for comfort, fun, and unforgettable memories.</p>
+        <form className='flex justify-between max-w-[300px] sm:max-w-[500px] scale-75 sm:scale-100 mx-auto mt-5 border border-black'>
           <input type="text" placeholder='Search Your Place' className='w-full pl-4 outline-none'/>
           <button type="submit" className='border-l border-black p-2 sm:px-8 active:bg-gray-600 text-white bg-black'>Search</button>
         </form>

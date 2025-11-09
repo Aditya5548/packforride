@@ -43,6 +43,14 @@ const page = () => {
               <button className='bg-gray-300 px-4 py-2 md:text-lg rounded-sm'>Groups</button>
             </div>
           </div>
+          <div className="flex flex-col pt-3">
+            <p className='text-xl font-semibold py-1'>Calculate Cost & Distance: </p>
+            <h1 className="my-1">Your Location: <input type="text" placeholder="Select starting location" className="w-3/5 border font-light border-gray-600 outline-0 p-1" /></h1>
+            <h1 className="my-1">No of people: <input type="text" placeholder="Enter no of people" className="w-3/5 border font-light border-gray-600 outline-0 p-1" /></h1>
+            <h1 className="my-1">Your Distance from selected Place: </h1>
+            <h1 className="my-1">Total Cost:  </h1>
+            <div />
+          </div>
           <div className="flex flex-col py-3">
             <p className='text-xl font-semibold'>Cheak Availablablity: </p>
             <div className='flex flex-wrap flex-col justify-center pt-2'>
@@ -60,24 +68,16 @@ const page = () => {
             </div>
             <div />
           </div>
-          <div className="flex flex-col py-3">
-            <p className='text-xl font-semibold py-1'>Calculate Cost & Distance for trip: </p>
-            <h1 className="my-1">Your Location: <input type="text" placeholder="Select starting location" className="w-3/5 border font-light border-gray-600 outline-0 p-1" /></h1>
-            <h1 className="my-1">No of people: <input type="text" placeholder="Enter no of people" className="w-3/5 border font-light border-gray-600 outline-0 p-1" /></h1>
-            <h1 className="my-1">Your Distance from selected Place: </h1>
-            <h1 className="my-1">Total Cost:  </h1>
-            <div />
-          </div>
           <div className='flex justify-center py-3'>
             <button className='bg-black text-white font-bold px-10 py-2 text-lg md:text-xl'>Book Now</button>
           </div>
           <div className='py-1'>
             <p className='text-xl font-semibold'>Important Notes</p>
-            <div className='flex flex-wrap justify-center gap-5 pt-2 text-sm'>
-              All tour timings are in Pack & go platform. <br />
-              For immigration clearance purposes, be sure to allocate 90 minutes before the tour and 60 minutes before your boarding time (upon the tour's completion). <br />
-              Availability of seats is not guaranteed on same-day bookings, please visit the Discover Qatar Transit Tour desk as soon as possible to secure your preferred tour timings. <br />
-              Please make sure to check the last departure time for this tour before moving forward.
+            <div className='flex flex-wrap justify-center gap-5 pt-2 text-xs w-9/10'>
+              ➢  All tour timings are in Pack & go platform. <br />
+              ➢  For immigration clearance purposes, be sure to allocate 90 minutes before the tour and 60 minutes before your boarding time (upon the tour's completion). <br />
+              ➢  Availability of seats is not guaranteed on same-day bookings, please visit the Discover Qatar Transit Tour desk as soon as possible to secure your preferred tour timings. <br />
+              ➢  Please make sure to check the last departure time for this tour before moving forward.
             </div>
           </div>
           <div className="flex flex-col items-center">

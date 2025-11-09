@@ -2,16 +2,16 @@ import { connectDB } from '../../lib/config/db';
 import userModel from '../../lib/models/userModel';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import validator from 'validator';
 const createtoken = (id) => {
     return jwt.sign({ id }, process.env.NEXT_PUBLIC_API_URL);
 }
 export default async function handler(req, res) {
     if (req.method === "GET") {
+        await connectDB();
         if (req.query.email && req.query.password) {
             const { email, password } = req.query
             if (email && password) {
-                const user = await userModel.findOne({ email })
+                const user = await userModel.findOne({ email:email })
                 if (!user) {
                     return res.status(200).json({ success: false, msg: "user not exists" });
                 }

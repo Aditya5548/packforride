@@ -46,16 +46,16 @@ const Bloglist = () => {
       <div className='relative h-[80vh] max-w-[850px] overflow-x-auto border border-gray-400 scrolling'>
               <div className="hidden bg-black/90 text-white font-bold md:flex md:justify-around md:items-center">
                 <p className="w-full md:w-2/5 px-6 py-4">tourname</p>
-                <p className="w-full md:w-3/20 px-6 py-3">Category</p>
-                <p className="w-full md:w-3/20 px-6 py-3">Posted</p>
-                <p className="w-full md:w-3/20 px-6 py-3">Action</p>
+                <p className="w-full md:w-1/5 px-6 py-3">Category</p>
+                <p className="w-full md:w-1/5 px-6 py-3">Posted</p>
+                <p className="w-full md:w-1/5 px-6 py-3">Action</p>
               </div>
             {data.map((item) => (
               <div key={item._id} className="flex flex-wrap justify-around items-center border-b">
                 <p className="w-full md:w-2/5 px-6 py-4">{item.tourname}</p>
-                <p className="w-full md:w-3/20 px-6 py-3">{item.category}</p>
-                <p className="w-full md:w-3/20 px-6 py-3">{format(item.createdAt)}</p>
-                <div className="flex justify-center w-full md:w-3/20">
+                <p className="w-full md:w-1/5 px-6 py-3">{item.category}</p>
+                <p className="w-full md:w-1/5 px-6 py-3">{format(item.createdAt)}</p>
+                <div className="flex justify-center w-full md:w-1/5">
                   <button className="bg-red-500 w-full text-white px-3 py-2 m-2 cursor-pointer rounded-md" onClick={()=>deleteBlog(item._id)}>Remove</button>
                 </div> 
               </div>
