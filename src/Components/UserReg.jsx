@@ -6,7 +6,6 @@ import { useRouter } from "next/router";
 import { useUser } from "@/context/UserContext";
 const UserReg = () => {
   const {showhide , setShowhide} = useUser();
-  const {showhideoptions, setShowhideoptions} = useUser();
   const {username, setUsername} = useUser();
   const [name, SetName] = useState()
   const [gender, SetGender] = useState()
@@ -15,7 +14,6 @@ const UserReg = () => {
   const [phoneno, SetPhoneno] = useState()
   const [password, SetPassword] = useState()
   const data = {name, gender, dob, email, phoneno,password}
-  const router = useRouter()
   const logcode = async (e) => {
     e.preventDefault();
     var response = await axios.post('/api/user',data)
@@ -35,6 +33,14 @@ const UserReg = () => {
       toast.error("All Field Are required")
     }
   }
+
+  const handleInvalid = (e) => {
+       if (e.target.value.length !== 10) {
+      e.target.setCustomValidity("Please enter a valid 10-digit number");
+    } else {
+      e.target.setCustomValidity("");
+    }
+  };
   return (
     <>
       <div className='fixed top-0 left-0 z-5 flex justify-center items-center w-screen h-screen bg-gray-500/90'>
@@ -56,9 +62,9 @@ const UserReg = () => {
               <h1>Date of Birth: </h1>
                <input type="date" className='outline-none border border-gray-200 px-3 py-1' name="DOB" value={dob} onChange={(e) => { SetDob(e.target.value) }} required />
             </div>
-            <input type="text" placeholder='Phone No' className='w-full outline-none border border-gray-200 px-3 py-1' name="phoneno" value={phoneno} onChange={(e) => { SetPhoneno(e.target.value) }} required />
+            <input type="text" pattern="[0-9]{10}" minLength={10} maxLength={10} placeholder='Phone No' className='w-full outline-none border border-gray-200 px-3 py-1' name="phoneno" value={phoneno} onChange={(e) => { SetPhoneno(e.target.value) }} onInvalid={handleInvalid} required />
             <input type="email" placeholder='Email Id' className='w-full outline-none border border-gray-200 px-3 py-1' name="email" value={email} onChange={(e) => { SetEmail(e.target.value) }} required />
-            <input type="password" placeholder='Password' className='w-full outline-none border border-gray-200 px-3 py-1' name="password" value={password} onChange={(e) => { SetPassword(e.target.value) }} required />
+            <input  className='w-full outline-none border border-gray-200 px-3 py-1' type="password" placeholder='Password' name="password" minLength={8} value={password} onChange={(e) => { SetPassword(e.target.value) }} required />
             <button className="bg-black text-white py-2 cursor-pointer">Register</button>
           </form>
         </div>

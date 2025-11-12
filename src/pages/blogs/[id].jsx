@@ -55,12 +55,14 @@ const page = () => {
             <p className='text-xl font-semibold'>Cheak Availablablity: </p>
             <div className='flex flex-wrap flex-col justify-center pt-2'>
               <div className="flex  items-center gap-3">
-              <h1 className="text-lg">Select Date:  </h1><DatePicker
+              <h1 className="text-lg">Select Date:  </h1>
+              <DatePicker
                 selected={selectedDate}
                 onChange={(date) => setSelectedDate(date)}
                 dateFormat="dd/MM/yyyy"
                 className="border border-gray-300 p-2 rounded-md"
               />
+              <button className='bg-gray-600 text-white font-bold py-1 px-3 rounded-sm text-lg'>Find</button>
               </div>
               <div className="flex justify-center">
                 <h1>no available slots</h1>
