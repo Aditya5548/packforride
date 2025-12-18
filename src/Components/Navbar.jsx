@@ -5,12 +5,13 @@ import UserReg from './UserReg';
 import { useUser } from '../context/UserContext';
 import { assets } from '@/assets/assets';
 import Image from 'next/image';
-const Navbar = () => {
-    
+import { signOut, useSession } from 'next-auth/react';
+const Navbar = () => {   
     const { showhide, setShowhide } = useUser();
     const { showhideoptions, setShowhideoptions } = useUser();
     const { username, setUsername } = useUser(false);
-
+    const session = useSession()
+    console.log(session)
     useEffect(() => {
         const token = localStorage.getItem("usertoken")
         if (token) {
@@ -20,7 +21,24 @@ const Navbar = () => {
             }
             cheackuser()
         }
+        if(session.status==="authenticated"){
+        setShowhide(false)
+        const username=session.data.user.name
+        const userfirstname=username.split(" ")[0];
+        setUsername(userfirstname)
+      }
     })
+    function logout(){
+        const token = localStorage.getItem("usertoken")
+        if(token){
+            setUsername('')
+            localStorage.removeItem('usertoken')
+        }
+        if(session.status=="authenticated"){
+            setUsername('')
+            signOut()
+        }
+    }
 
     return (
         <div className='pt-5 px-5 md:px-12 lg:px-28'>
@@ -43,7 +61,7 @@ const Navbar = () => {
                                 <div class="dropdown-content">
                                     <button>profile</button>
                                     <button>Booked tours</button>
-                                    <button onClick={()=>{setUsername('');localStorage.removeItem('usertoken')}}>Logout</button>
+                                    <button onClick={()=>{logout()}}>Logout</button>
                                 </div>
                             </div>
                     }

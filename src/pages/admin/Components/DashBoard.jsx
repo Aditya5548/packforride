@@ -4,7 +4,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { ToastContainer } from 'react-toastify';
 
 import AddProduct from './AddProduct';
-import Bloglist from './Bloglist';
+import TourData from './TourData';
 import Subscriptions from './Subscriptions';
 import {assets} from '../../../assets/assets';
 
@@ -35,7 +35,7 @@ const DashBoard = () => {
         <button onClick={()=>logout()} href={'/admin/subscriptions'} className="flex items-center border gap-2 max-w-[150px] px-3 py-2 text-center font-medium cursor-pointer bg-white text-black shadow-[-7px_7px_0px_#000000]"> <Image src={assets.logout} width={30} height={20}  alt=''/> <p className="hidden w-[100px] md:block">Logout</p></button>
       </div>
       <ToastContainer/>
-      <div className="flex justify-center w-full">{category==='add'?<AddProduct/>:category==='blogs'?<Bloglist/>:<Subscriptions/>}</div>
+      <div className="flex justify-center w-full">{category==='add'?<AddProduct/>:category==='blogs'?<TourData/>:<Subscriptions/>}</div>
     </div>
     </div>
     </>

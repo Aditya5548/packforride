@@ -30,7 +30,7 @@ const AddProduct = () => {
     formdata.append('location', data.location)
     formdata.append('image', image)
     formdata.append('token', token)
-    const response = await axios.post('/api/blog', formdata)
+    const response = await axios.post('/api/tours', formdata)
 
     console.log(response)
     if (response.data.status == "success") {

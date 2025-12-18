@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import Image from 'next/image';
 import { assets } from '../assets/assets';
 import { format } from 'timeago.js';
-const Bloglist = (data) => {
+const Tourlist = (data) => {
   const [menu, setMenu] = useState("All");
   const [blogs] = useState(data.Blogs.blogs);
   const router = useRouter()
@@ -54,4 +54,4 @@ const Bloglist = (data) => {
 };
 
 
-export default Bloglist
+export default Tourlist
