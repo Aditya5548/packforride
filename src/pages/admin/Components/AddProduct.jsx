@@ -15,7 +15,6 @@ const AddProduct = () => {
     const name = e.target.name;
     const value = e.target.value;
     setData(data => ({ ...data, [name]: value }))
-    console.log(data)
   }
 
   const onsubmitHandler = async (e) => {
@@ -31,8 +30,6 @@ const AddProduct = () => {
     formdata.append('image', image)
     formdata.append('token', token)
     const response = await axios.post('/api/tours', formdata)
-
-    console.log(response)
     if (response.data.status == "success") {
       toast.success('Tour Added Successfully')
       setImage(false)

@@ -9,7 +9,6 @@ const fetcher = (url) => fetch(url).then(res => res.json())
 const TourData = () => {
   const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IkFkaXR5YTkzNzciLCJpYXQiOjE3NjA1MzM0NzN9.CqdnBoA0eNMwLa7U8dWtDhuw7QLa3tsgbL8Q8hxSvAo"
   const { data, error, isLoading, mutate } = useSWR(`/api/tours?token=${token}`, fetcher)
-  console.log(data)
   if (isLoading) {return (
     <div className="flex justify-center items-center">
       <div className="flex flex-col items-center gap-5">
@@ -39,8 +38,6 @@ const TourData = () => {
       toast.error(response.data.msg)
     }
   }
-
-  console.log(data)
   return (
     <div className="flex flex-col items-center pt-5 px-5 sm:pt-12 sm:pl-16">
       <div className='relative h-[80vh] max-w-[850px] overflow-x-auto border border-gray-400 scrolling'>

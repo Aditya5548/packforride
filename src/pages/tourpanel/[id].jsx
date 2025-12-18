@@ -10,7 +10,6 @@ const page = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const router = useRouter();
   const data = router.query;
-  console.log(data);
   return (
     data ? <>
       <div className='bg-gray-300 pb-5'>
@@ -37,24 +36,24 @@ const page = () => {
           <div className='py-3'>
             <p className='text-xl font-semibold'>Traveling option:</p>
             <div className='flex flex-wrap justify-center gap-5 pt-2'>
-              <button className='bg-gray-300 px-4 py-2 md:text-lg rounded-sm'>Indivisual</button>
               <button className='bg-gray-300 px-4 py-2 md:text-lg rounded-sm'>Family</button>
-              <button className='bg-gray-300 px-4 py-2 md:text-lg rounded-sm'>friends</button>
+              <button className='bg-gray-300 px-4 py-2 md:text-lg rounded-sm'>Friends</button>
+              <button className='bg-gray-300 px-4 py-2 md:text-lg rounded-sm'>Indivisual</button>
               <button className='bg-gray-300 px-4 py-2 md:text-lg rounded-sm'>Groups</button>
             </div>
           </div>
           <div className="flex flex-col pt-3">
             <p className='text-xl font-semibold py-1'>Calculate Cost & Distance: </p>
-            <h1 className="my-1">Your Location: <input type="text" placeholder="Select starting location" className="w-3/5 border font-light border-gray-600 outline-0 p-1" /></h1>
-            <h1 className="my-1">No of people: <input type="text" placeholder="Enter no of people" className="w-3/5 border font-light border-gray-600 outline-0 p-1" /></h1>
+            <h1 className="my-1">Your Location: <input type="text" placeholder="Select Location" className="w-3/5 border font-light border-gray-600 outline-0 p-1 text-sm md:text-md" /></h1>
+            <h1 className="my-1">No of people:  <input type="text" placeholder="No. of Peoples" className="w-3/5 border font-light border-gray-600 outline-0 p-1 text-sm md:text-md" /></h1>
             <h1 className="my-1">Your Distance from selected Place: </h1>
             <h1 className="my-1">Total Cost:  </h1>
             <div />
           </div>
-          <div className="flex flex-col py-3">
+          <div className="flex flex-col py-3 ">
             <p className='text-xl font-semibold'>Cheak Availablablity: </p>
             <div className='flex flex-wrap flex-col justify-center pt-2'>
-              <div className="flex  items-center gap-3">
+              <div className="flex  items-center flex-wrap gap-3">
               <h1 className="text-lg">Select Date:  </h1>
               <DatePicker
                 selected={selectedDate}
@@ -64,8 +63,8 @@ const page = () => {
               />
               <button className='bg-gray-600 text-white font-bold py-1 px-3 rounded-sm text-lg'>Find</button>
               </div>
-              <div className="flex justify-center">
-                <h1>no available slots</h1>
+              <div className="flex justify-center text-red-600 py-1">
+                <h1>No Slots Available</h1>
               </div>
             </div>
             <div />

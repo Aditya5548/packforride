@@ -34,10 +34,10 @@ const Userlogin = () => {
     <div className='fixed top-0 left-0 z-5 flex justify-center items-center w-screen h-screen bg-gray-100/90'>
       <ToastContainer/>
       <div className='flex flex-col gap-2 w-[90%] md:w-[400px] border border-gray-400 shadow-lg px-10 py-3 bg-white'>
-          <button className="text-2xl text-end " onClick={()=>setShowhideoptions(false)}>X</button> 
+          <button className="text-2xl text-end " onClick={()=>setShowhide(false)}>X</button> 
           <h1 className="text-2xl text-center font-bold">Login</h1>  
          <div className="pt-2">
-          <h1 className="flex">Don't have an account ?<button className="text-blue-600 px-0.5 italic" onClick={()=>{setShowhideoptions(2)}}>SignUp</button></h1>
+          <h1 className="flex text-sm md:text-lg">Don't have an account ?<button className="text-blue-600 px-0.5 italic" onClick={()=>{setShowhideoptions("signup")}}> SignUp</button></h1>
          </div>
          <form className='flex flex-col gap-3 pt-3' onSubmit={logcode}>
           <input type="email" placeholder='email Id' className='w-full outline-none border border-gray-200 px-3 py-1' name="email" value={email} onChange={(e)=>{SetEmail(e.target.value)}} required />

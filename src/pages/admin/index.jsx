@@ -14,12 +14,10 @@ const index = () => {
     if (savedToken) {
       try {
         const decoded = jwtDecode(savedToken);
-        console.log("Token Decoded:", decoded);
         setToken(true);
       } catch (error) {
         setToken(false)
         localStorage.removeItem('token')
-        console.log("invalid Token")
       }
     } 
     else {

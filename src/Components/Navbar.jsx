@@ -11,7 +11,6 @@ const Navbar = () => {
     const { showhideoptions, setShowhideoptions } = useUser();
     const { username, setUsername } = useUser(false);
     const session = useSession()
-    console.log(session)
     useEffect(() => {
         const token = localStorage.getItem("usertoken")
         if (token) {
@@ -42,16 +41,16 @@ const Navbar = () => {
 
     return (
         <div className='pt-5 px-5 md:px-12 lg:px-28'>
-            {showhide ? showhideoptions == 1 ? <Userlogin /> : <UserReg /> : ""}
+            {showhide ? showhideoptions == "login" ? <Userlogin /> :showhideoptions == "signup" ? <UserReg /> : "":""}
 
             <div className='flex justify-between items-center'>
                 <p className='text-xl sm:text-4xl font-medium italic'>Pack For Ride</p>
                 <div>
                     {
                         !username ?
-                            <div className='flex gap-1  font-medium py-1 px-3 sm:py-3 sm:px-3 border border-solid border-black shadow-[-7px_7px_0px_#000000] text-black bg-white'>
-                                <button onClick={() => { setShowhide(true); setShowhideoptions(1); }}>Login</button> /
-                                <button onClick={() => { setShowhide(true); setShowhideoptions(2); }}>Signup</button>
+                            <div className='flex gap-1  font-medium py-1 px-3 sm:py-3 sm:px-3 border border-solid border-black shadow-[-7px_7px_0px_#000000]'>
+                                <button onClick={() => { setShowhide(true); setShowhideoptions("login"); }}>Login</button> /
+                                <button onClick={() => { setShowhide(true); setShowhideoptions("signup"); }}>Signup</button>
                             </div> :
                             <div class="dropdown">
                                 <button class="dropbtn">

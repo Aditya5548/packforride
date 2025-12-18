@@ -55,14 +55,12 @@ export default async function handler(req, res) {
                 const newuser = new userModel(data)
                 const userreturn = await newuser.save()
                 const token = createtoken(userreturn._id)
-                console.log("token", token)
                 return res.status(200).json({ success: true, msg: "Login Successfull", usertoken: token, username: userreturn.name });
             }
             else {
                 return res.status(200).json({ success: false, msg: "All Field required" });
             }
         } catch (error) {
-            console.log(error)
             return res.status(200).json({ success: false, msg: "Error Occured" });
         }
 

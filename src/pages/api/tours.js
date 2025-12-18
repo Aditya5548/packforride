@@ -33,7 +33,6 @@ export default async function handler(req, res) {
       if (err) return res.status(500).json({ msg: err.message });
       try {
         const decoded = jwt.verify(fields.token[0], process.env.NEXT_PUBLIC_API_URL)
-        console.log("decode data", decoded)
         try {
           const imageFile = files.image?.[0];
           const fileName = path.basename(imageFile.filepath);
@@ -55,12 +54,10 @@ export default async function handler(req, res) {
 
         }
         catch (error) {
-          console.log(error)
           return res.status(200).json({ status: 'failed', msg: "image is not uploaded" ,err:error});
         }
       }
       catch (e) {
-        console.log(e)
         return res.status(200).json({ status: 'failed', msg: "Invaild Login Credential"});
       }
     });
