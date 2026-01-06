@@ -4,8 +4,9 @@ export const UserProvider = ({ children }) => {
   const [showhide, setShowhide] = useState(false);
   const [showhideoptions, setShowhideoptions] = useState(false);
   const [username, setUsername] = useState("");
+  const [paymentpanel,setPaymentPanel]=useState(false)
   return (
-    <UserContext.Provider value={{ showhide, setShowhide ,showhideoptions, setShowhideoptions,username, setUsername}}>
+    <UserContext.Provider value={{ showhide, setShowhide ,showhideoptions, setShowhideoptions,username, setUsername,paymentpanel,setPaymentPanel}}>
       {children}
     </UserContext.Provider>
   );

@@ -9,10 +9,11 @@ const schema = new mongoose.Schema({
     fooding:{type:String,required:true},
     location:{type:String,required:true},
     tourhostname:{type:String,required:true},
-    tourhostid:{type:String,required:true}
+    tourhostid:{type:String,required:true},
+    cost:{type:String,required:true}
 },
 { timestamps : true}
 
 )
-const TourlistModel =mongoose.models.Placesdata || mongoose.model('Placesdata',schema);
+const TourlistModel =mongoose.models.tourlistplacesdata || mongoose.model('tourlistplacesdata',schema);
 export default TourlistModel;

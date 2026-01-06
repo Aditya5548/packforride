@@ -3,17 +3,50 @@ import { useRouter } from 'next/router';
 import { assets } from '../../assets/assets';
 import Footer from '../../Components/Footer';
 import Navbar from '../../Components/Navbar';
+import Bookingpanel from './Bookingpanel';
 import { useState } from "react";
+import Userlogin from "../../Components/Userlogin";
+import UserReg from "../../Components/UserReg";
+import { useUser } from "@/context/UserContext";
 import DatePicker from "react-datepicker";
+import { ToastContainer,toast } from 'react-toastify';
+import { AirVent, ArrowRight, BedSingle, BusFront, Clock, MapPin, PlugZap, User, Wifi } from 'lucide-react';
+
 import "react-datepicker/dist/react-datepicker.css";
 const page = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [totalcost, setTotalCost] = useState(false);
+  const [noofpeople, setNoofPeople] = useState();
+  const { paymentpanel, setPaymentPanel } = useUser();
+      const { showhide, setShowhide } = useUser();
+      const { showhideoptions, setShowhideoptions } = useUser();
   const router = useRouter();
   const data = router.query;
+  const Calculatecost = async (cost) => {
+    const calculating = Number(cost) * noofpeople
+    console.log(calculating)
+    setTotalCost(calculating)
+  }
+  const paymentdashopen = (e) => {
+      if(!showhide){
+        setShowhide(true)
+        setShowhideoptions("login")
+      }
+      else{
+        if(!totalcost){
+          toast.error("Calculate Cost")
+        }
+        else{
+          setPaymentPanel(true)
+        }
+      }
+    };
+
   return (
     data ? <>
       <div className='bg-gray-300 pb-5'>
         <Navbar />
+        <ToastContainer/>
         <div className="text-center mb-20 mt-5">
           <h1 className="text-xl sm:text-2xl font-semibold max-w-[700px] mx-auto pb-2">{data.category} Tour</h1>
         </div>
@@ -42,36 +75,145 @@ const page = () => {
               <button className='bg-gray-300 px-4 py-2 md:text-lg rounded-sm'>Groups</button>
             </div>
           </div>
-          <div className="flex flex-col pt-3">
-            <p className='text-xl font-semibold py-1'>Calculate Cost & Distance: </p>
-            <h1 className="my-1">Your Location: <input type="text" placeholder="Select Location" className="w-3/5 border font-light border-gray-600 outline-0 p-1 text-sm md:text-md" /></h1>
-            <h1 className="my-1">No of people:  <input type="text" placeholder="No. of Peoples" className="w-3/5 border font-light border-gray-600 outline-0 p-1 text-sm md:text-md" /></h1>
-            <h1 className="my-1">Your Distance from selected Place: </h1>
-            <h1 className="my-1">Total Cost:  </h1>
+          <div className="flex flex-col pt-3 items-center w-full bg-gray-50 rounded-lg">
+            <p className='text-xl font-semibold py-1'>Calculate Trip Cost: </p>
+            <div className="flex flex-col gap-2 pt-3">
+              <h1><span className="w-1/2 font-bold">No of Peoples : </span><input type="number" placeholder="No. of People" className="border border-gray-200 outline-none px-2 bg-white" name="noofpeople" value={noofpeople} onChange={(e) => { setNoofPeople(e.target.value) }} /></h1>
+              <div className="flex">
+                <h1 className="w-1/2 font-bold">Fooding : </h1>
+                <select name="accessries" className="px-4 outline-none">
+                 <option value="no">Select</option>
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                </select>
+              </div>
+              <div className="flex">
+                <h1 className="w-1/2 font-bold">Room :</h1>
+                <select name="accessries" className="px-4 outline-none">
+                <option value="no">Select</option>
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                </select>
+              </div>
+              <div className="flex">
+                <h1 className="w-1/2 font-bold">Accessries :</h1>
+                <select name="accessries" className="px-4 outline-none">
+                <option value="no">Select</option>
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                </select>
+              </div>
+              <button className='bg-black text-white font-bold py-1' onClick={() => { Calculatecost(data.cost) }}>Calculate Cost</button>
+            </div>
+            <h1 className="py-2 text-xl text-red-600 font-bold">{totalcost && `Total Cost:  ${totalcost}`}</h1>
             <div />
           </div>
+          {paymentpanel && <Bookingpanel />}
+          {showhide ? showhideoptions == "login" ? <Userlogin /> :showhideoptions == "signup" ? <UserReg /> : "":""}
           <div className="flex flex-col py-3 ">
             <p className='text-xl font-semibold'>Cheak Availablablity: </p>
             <div className='flex flex-wrap flex-col justify-center pt-2'>
               <div className="flex  items-center flex-wrap gap-3">
-              <h1 className="text-lg">Select Date:  </h1>
-              <DatePicker
-                selected={selectedDate}
-                onChange={(date) => setSelectedDate(date)}
-                dateFormat="dd/MM/yyyy"
-                className="border border-gray-300 p-2 rounded-md"
-              />
-              <button className='bg-gray-600 text-white font-bold py-1 px-3 rounded-sm text-lg'>Find</button>
+                <h1 className="text-lg">Select Date:  </h1>
+                <DatePicker
+                  selected={selectedDate}
+                  onChange={(date) => setSelectedDate(date)}
+                  dateFormat="dd/MM/yyyy"
+                  className="border border-gray-300 p-2 rounded-md"
+                />
+                <button className='bg-gray-600 text-white font-bold py-1 px-3 rounded-sm text-lg'>Find</button>
               </div>
-              <div className="flex justify-center text-red-600 py-1">
-                <h1>No Slots Available</h1>
+              <div className='flex py-3 flex-wrap gap-2 justify-between'>
+                <div className="bg-gray-200 rounded-md px-4 py-2 flex flex-col gap-2 w-9/10 md:w-[250px]">
+                  <p className="flex gap-2 py-1 font-bold"><BusFront className="text-gray-600" /> Standard BUS</p>
+                  <p className="flex gap-2 py-1"> <Clock className="text-gray-600" /> 9:30 pm - 11:00pm</p>
+                  <p className="flex gap-3 py-1">27/12/2025 <ArrowRight className="text-gray-600" /> 31/12/2025</p>
+                  <p className="flex"><MapPin className="text-gray-600 text-xl" /> <span className=" px-2 text-sm">Vineet-Khand Gomti nagar Lucknow - 226028</span></p>
+                  <div className="w-full py-1">
+                    <div className="h-3 w-full bg-gray-300 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-indigo-500 rounded-full transition-all duration-500"
+                        style={{ width: `${70}%` }}
+                      />
+                    </div>
+                    <div className="flex justify-between text-sm text-gray-600 mt-2">
+                      <span>{50} Booked</span>
+                      <span>{30} Seats Left</span>
+                    </div>
+                  </div>
+                  <p className="flex gap-2 py-1 font-bold">Faclities: <Wifi className="text-gray-600" /> <PlugZap className="text-gray-600" /> <AirVent className="text-gray-600" /> <BedSingle className="text-gray-600" /></p>
+                  <button onClick={() => {paymentdashopen()}} className='bg-gray-900 self-center text-white font-bold px-3 py-1 text-md rounded-lg md:text-lg'>Book Now</button>
+                </div>
+
+                <div className="bg-gray-200 rounded-md px-4 py-2 flex flex-col gap-2 w-9/10 md:w-[250px]">
+                  <p className="flex gap-2 py-1 font-bold"><BusFront className="text-gray-600" /> Mini BUS</p>
+                  <p className="flex gap-2 py-1"> <Clock className="text-gray-600" /> 9:30 pm - 11:00pm</p>
+                  <p className="flex gap-3 py-1">27/12/2025 <ArrowRight className="text-gray-600" /> 31/12/2025</p>
+                  <p className="flex"><MapPin className="text-gray-600 text-xl" /> <span className=" px-2 text-sm">Vineet-Khand Gomti nagar Lucknow - 226028</span></p>
+                  <div className="w-full py-1">
+                    <div className="h-3 w-full bg-gray-300 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-indigo-500 rounded-full transition-all duration-500"
+                        style={{ width: `${25}%` }}
+                      />
+                    </div>
+                    <div className="flex justify-between text-sm text-gray-600 mt-2">
+                      <span>{30} Booked</span>
+                      <span>{90} Seats Left</span>
+                    </div>
+                  </div>
+                  <p className="flex gap-2 py-1 font-bold">Faclities: <Wifi className="text-gray-600" /> <PlugZap className="text-gray-600" /> <AirVent className="text-gray-600" /> <BedSingle className="text-gray-600" /></p>
+                  <button onClick={() => {paymentdashopen()}} className='bg-gray-900 self-center text-white font-bold px-3 py-1 text-md rounded-lg md:text-lg'>Book Now</button>
+                </div>
+
+                <div className="bg-gray-200 rounded-md px-4 py-2 flex flex-col gap-2 w-9/10 md:w-[250px]">
+                  <p className="flex gap-2 py-1 font-bold"><BusFront className="text-gray-600" /> AC BUS</p>
+                  <p className="flex gap-2 py-1"> <Clock className="text-gray-600" /> 9:30 pm - 11:00pm</p>
+                  <p className="flex gap-3 py-1">27/12/2025 <ArrowRight className="text-gray-600" /> 31/12/2025</p>
+                  <p className="flex"><MapPin className="text-gray-600 text-xl" /> <span className=" px-2 text-sm">Vineet-Khand Gomti nagar Lucknow - 226028</span></p>
+                  <div className="w-full py-1">
+                    <div className="h-3 w-full bg-gray-300 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-indigo-500 rounded-full transition-all duration-500"
+                        style={{ width: `${50}%` }}
+                      />
+                    </div>
+                    <div className="flex justify-between text-sm text-gray-600 mt-2">
+                      <span>{70} Booked</span>
+                      <span>{70} Seats Left</span>
+                    </div>
+                  </div>
+                  <p className="flex gap-2 py-1 font-bold">Faclities: <Wifi className="text-gray-600" /> <PlugZap className="text-gray-600" /> <AirVent className="text-gray-600" /> <BedSingle className="text-gray-600" /></p>
+                  <button onClick={() => {paymentdashopen()}} className='bg-gray-900 self-center text-white font-bold px-3 py-1 text-md rounded-lg md:text-lg'>Book Now</button>
+                </div>
+
+                <div className="bg-gray-200 rounded-md px-4 py-2 flex flex-col gap-2 w-9/10 md:w-[250px]">
+                  <p className="flex gap-2 py-1 font-bold"><BusFront className="text-gray-600" /> Campher VAN</p>
+                  <p className="flex gap-2 py-1"> <Clock className="text-gray-600" /> 9:30 pm - 11:00pm</p>
+                  <p className="flex gap-3 py-1">27/12/2025 <ArrowRight className="text-gray-600" /> 31/12/2025</p>
+                  <p className="flex"><MapPin className="text-gray-600 text-xl" /> <span className=" px-2 text-sm">Vineet-Khand Gomti nagar Lucknow - 226028</span></p>
+                  <div className="w-full py-1">
+                    <div className="h-3 w-full bg-gray-300 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-indigo-500 rounded-full transition-all duration-500"
+                        style={{ width: `${20}%` }}
+                      />
+                    </div>
+                    <div className="flex justify-between text-sm text-gray-600 mt-2">
+                      <span>{30} Booked</span>
+                      <span>{90} Seats Left</span>
+                    </div>
+                  </div>
+                  <p className="flex gap-2 py-1 font-bold">Faclities: <Wifi className="text-gray-600" /> <PlugZap className="text-gray-600" /> <AirVent className="text-gray-600" /> <BedSingle className="text-gray-600" /></p>
+                  <button onClick={() => {paymentdashopen()}} className='bg-gray-900 self-center text-white font-bold px-3 py-1 text-md rounded-lg md:text-lg'>Book Now</button>
+                </div>
+
+
               </div>
             </div>
             <div />
           </div>
-          <div className='flex justify-center py-3'>
-            <button className='bg-black text-white font-bold px-10 py-2 text-lg md:text-xl'>Book Now</button>
-          </div>
+
           <div className='py-1'>
             <p className='text-xl font-semibold'>Important Notes</p>
             <div className='flex flex-wrap justify-center gap-5 pt-2 text-xs w-9/10'>

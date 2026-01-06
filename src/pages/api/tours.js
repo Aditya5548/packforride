@@ -48,6 +48,7 @@ export default async function handler(req, res) {
             location: fields.location?.[0],
             tourhostname: "Aditya kumar Yadav",
             tourhostid: "3989fiidsjfij", 
+            cost: fields.cost?.[0],
           };
           const response = await Tourplace.create(Tour);
           return res.status(200).json({ status: 'success', msg: response });
