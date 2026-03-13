@@ -1,98 +1,247 @@
-import React, { useState } from 'react'
-import axios from 'axios'
-import { Mail, PhoneCall, Plus, User, Users, IndianRupee } from 'lucide-react'
+"use client";
+
+import React, { useState } from "react";
+import axios from "axios";
+import { Mail, PhoneCall, Plus, User, Users } from "lucide-react";
 import { useUser } from "@/context/UserContext";
-import { ToastContainer, toast } from 'react-toastify';
-const Bookingpanel = (props) => {
-  const { totalamount, passenger } = props
-  const { tourname, _id } = props.tourdata
-  const {tourslot} = props
-  console.log(tourslot)
-  const { paymentpanel, setPaymentPanel } = useUser();
-  const [orderamount, setOrderamount] = useState();
-  const [remainingamount, setRemainingamount] = useState();
-  let [paymenttype, setPaymentType] = useState("Full");
-  let [name, setName] = useState();
-  let [age, setAge] = useState();
-  let [gender, setGender] = useState();
-  let [email, setEmail] = useState();
-  let [phoneno, setPhoneno] = useState();
+import { ToastContainer, toast } from "react-toastify";
+
+const Bookingpanel = ({ totalamount, passenger, tourdata, tourslot }) => {
+
+  const { setPaymentPanel } = useUser();
+
+  if (!tourdata || !tourslot) return null;
+
+  const { tourname, _id } = tourdata;
+
+  const [paymenttype, setPaymentType] = useState("Full");
+  const [orderamount, setOrderamount] = useState(totalamount);
+  const [remainingamount, setRemainingamount] = useState(0);
+
+  const [name, setName] = useState("");
+  const [age, setAge] = useState("");
+  const [gender, setGender] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneno, setPhoneno] = useState("");
 
   const regcode = async (e) => {
-    const token = localStorage.getItem("usertoken")
-    var userinfo = await axios.get('/api/user', { params: { token: token } })
-    const data = {
-      name,
-      age,
-      gender,
-      email,
-      phoneno,
-      orderamount,
-      remainingamount,
-      passenger,
-      tourname,
-      tourid: _id,
-      paymenttype,
-      userid: userinfo.data.userid,
-      tourstartdate: tourslot.tourStartDate,
-      tourenddate: tourslot.tourEndDate,
-      boardingtime: tourslot.boardingTime,
-      pickupaddress: tourslot.location ,
-      vehicletype: tourslot.vehicleType,
-      facilities:tourslot.facilities,
-      slotid:tourslot.id
-    }
-    var response = await axios.post('/api/BookingTour', data)
-    if (response.data.success){
-      setPaymentPanel(false)
-      toast.success("Tour Booked Successfully.....")
-    }
-    else{
-      toast.error("fill correct Details")
-    }
+    e.preventDefault();
 
+    const token =
+      typeof window !== "undefined"
+        ? localStorage.getItem("usertoken")
+        : null;
+
+    try {
+      const userinfo = await axios.get("/api/user", {
+        params: { token: token },
+      });
+
+      const data = {
+        name,
+        age,
+        gender,
+        email,
+        phoneno,
+        orderamount,
+        remainingamount,
+        passenger,
+        tourname,
+        tourid: _id,
+        paymenttype,
+        userid: userinfo.data.userid,
+        tourstartdate: tourslot.tourStartDate,
+        tourenddate: tourslot.tourEndDate,
+        boardingtime: tourslot.boardingTime,
+        pickupaddress: tourslot.location,
+        vehicletype: tourslot.vehicleType,
+        facilities: tourslot.facilities,
+        slotid: tourslot.id,
+      };
+
+      const response = await axios.post("/api/BookingTour", data);
+
+      if (response.data.success) {
+        setPaymentPanel(false);
+        toast.success("Tour Booked Successfully");
+      } else {
+        toast.error("Fill correct details");
+      }
+
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong");
+    }
   };
+
   return (
-    <div className='fixed top-0 left-0 w-screen h-screen bg-white/90 z-40'>
-      <div className='flex justify-center items-center h-full'>
+    <div className="fixed top-0 left-0 w-screen h-screen bg-white/90 z-40">
+      <div className="flex justify-center items-center h-full">
+
         <ToastContainer />
-        <div className=' flex flex-col w-9/10 md:w-[400px]  py-2 bg-gray-200'>
-          <div className='flex flex-col gap-2 px-5 py-1'>
-            <button className="text-2xl text-end cursor-pointer" onClick={() => { setPaymentPanel(false) }}>X</button>
-            <h1 className="text-2xl text-center font-bold">Register Booking</h1>
+
+        <div className="flex flex-col w-9/10 md:w-[400px] py-3 bg-gray-200 rounded-lg">
+
+          <div className="flex flex-col gap-2 px-5 py-1">
+            <button
+              className="text-2xl text-end cursor-pointer"
+              onClick={() => setPaymentPanel(false)}
+            >
+              X
+            </button>
+
+            <h1 className="text-2xl text-center font-bold">
+              Register Booking
+            </h1>
           </div>
-          <form className='pt-5'>
-            <p className='flex gap-2 items-center  mx-5 my-2 px-3 py-1'> <b>Tourname:</b> {props.tourdata.tourname}</p>
-            <p className='flex gap-2 items-center bg-white mx-5 my-2 px-3 py-1'><User className='text-gray-600' /><input className="outline-none bg-white px-5 py-1" type="text" placeholder='Name' value={name} onChange={(e) => { setName(e.target.value) }} required /></p>
-            <div className="flex gap-2 text-lg bg-white mx-5 my-2 px-3 py-1">
-              <Users className='text-gray-600' />
-              <label htmlFor="male"> Male</label>
-              <input type="radio" name="Gender" value="male" onChange={(e) => { setGender(e.target.value) }} required />
-              <label htmlFor="male">Female</label>
-              <input type="radio" name="Gender" value="female" onChange={(e) => { setGender(e.target.value) }} required />
-              <label htmlFor="male">Other</label>
-              <input type="radio" name="Gender" value="other" onChange={(e) => { setGender(e.target.value) }} required />
+
+          <form className="pt-5" onSubmit={regcode}>
+
+            <p className="flex gap-2 items-center mx-5 my-2 px-3 py-1">
+              <b>Tourname:</b> {tourname}
+            </p>
+
+            <p className="flex gap-2 items-center bg-white mx-5 my-2 px-3 py-1">
+              <User />
+              <input
+                className="outline-none px-5 py-1 w-full"
+                type="text"
+                placeholder="Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+            </p>
+
+            <div className="flex gap-3 bg-white mx-5 my-2 px-3 py-1">
+
+              <Users />
+
+              <label>
+                Male
+                <input
+                  type="radio"
+                  name="Gender"
+                  value="male"
+                  onChange={(e) => setGender(e.target.value)}
+                />
+              </label>
+
+              <label>
+                Female
+                <input
+                  type="radio"
+                  name="Gender"
+                  value="female"
+                  onChange={(e) => setGender(e.target.value)}
+                />
+              </label>
+
+              <label>
+                Other
+                <input
+                  type="radio"
+                  name="Gender"
+                  value="other"
+                  onChange={(e) => setGender(e.target.value)}
+                />
+              </label>
+
             </div>
-            <p className='flex gap-2 items-center bg-white mx-5 my-2 px-3 py-1'><Plus className='text-gray-600' /><input className="outline-none px-5 py-1 w-1/1" type="number" name="age" value={age} onChange={(e) => { setAge(e.target.value) }} placeholder='Age' min={18} max={70} required /></p>
-            <p className='flex gap-2 items-center bg-white mx-5 my-2 px-3 py-1'><Mail className='text-gray-600' /><input className="outline-none px-5 py-1" type="text" placeholder='Email Id' value={email} onChange={(e) => { setEmail(e.target.value) }} required /></p>
-            <p className='flex gap-2 items-center bg-white mx-5 my-2 px-3 py-1'><PhoneCall className='text-gray-600' /><input className="outline-none px-5 py-1" type="text" placeholder='Phone No' value={phoneno} onChange={(e) => { setPhoneno(e.target.value) }} required /></p>
+
+            <p className="flex gap-2 items-center bg-white mx-5 my-2 px-3 py-1">
+              <Plus />
+              <input
+                className="outline-none px-5 py-1 w-full"
+                type="number"
+                placeholder="Age"
+                value={age}
+                min={18}
+                max={70}
+                onChange={(e) => setAge(e.target.value)}
+                required
+              />
+            </p>
+
+            <p className="flex gap-2 items-center bg-white mx-5 my-2 px-3 py-1">
+              <Mail />
+              <input
+                className="outline-none px-5 py-1 w-full"
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </p>
+
+            <p className="flex gap-2 items-center bg-white mx-5 my-2 px-3 py-1">
+              <PhoneCall />
+              <input
+                className="outline-none px-5 py-1 w-full"
+                type="text"
+                placeholder="Phone No"
+                value={phoneno}
+                onChange={(e) => setPhoneno(e.target.value)}
+                required
+              />
+            </p>
+
+            <div className="flex gap-5 text-lg bg-white my-2 mx-10 rounded-lg px-2 py-2 justify-center">
+
+              <label>
+                Full Payment
+                <input
+                  type="radio"
+                  name="paymenttype"
+                  value="Full"
+                  checked={paymenttype === "Full"}
+                  onChange={() => {
+                    setPaymentType("Full");
+                    setOrderamount(totalamount);
+                    setRemainingamount(0);
+                  }}
+                />
+              </label>
+
+              <label>
+                Registration
+                <input
+                  type="radio"
+                  name="paymenttype"
+                  value="registration"
+                  checked={paymenttype === "registration"}
+                  onChange={() => {
+                    setPaymentType("registration");
+                    setOrderamount(500);
+                    setRemainingamount(totalamount);
+                  }}
+                />
+              </label>
+
+            </div>
+
+            <p className="flex gap-2 items-center mx-5 my-2 px-3 py-1">
+              <b>Rupees:</b>
+              {paymenttype === "Full"
+                ? `${totalamount} + GST (18%)`
+                : "500"}
+            </p>
+
+            <button
+              type="submit"
+              className="bg-red-600 px-5 text-white font-bold self-center rounded-lg py-2 my-3 cursor-pointer"
+            >
+              Proceed For Payment
+            </button>
+
           </form>
-          <div className="flex gap-2 text-lg bg-white my-2 mx-10 rounded-lg px-1 py-1 justify-center">
-            <label htmlFor="paymenttype" className='flex gap-2'> Full Payment
-              <input type="radio" name="paymenttype" value="Full" onChange={(e) => { setPaymentType(e.target.value); setOrderamount(totalamount + 500); setRemainingamount(0) }} required default />
-            </label>
-            <label htmlFor="paymenttype" className='flex gap-2'>Registration
-              <input type="radio" name="paymenttype" value="registration" onChange={(e) => { setPaymentType(e.target.value); setOrderamount(500); setRemainingamount(totalamount) }} required />
-            </label>
 
-          </div>
-          <p className='flex gap-2 items-center  mx-5 my-2 px-3 py-1'> <b>Rupees: </b> {paymenttype == "Full" ? totalamount + "+ GST (18% included)" : "500"}</p>
-          <button className='bg-red-600 px-5 text-white w-fit font-bold self-center rounded-lg py-2 my-2 cursor-pointer' onClick={() => { regcode() }}>Proceed For Payment </button>
         </div>
+
       </div>
-
     </div>
-  )
-}
+  );
+};
 
-export default Bookingpanel
+export default Bookingpanel;
