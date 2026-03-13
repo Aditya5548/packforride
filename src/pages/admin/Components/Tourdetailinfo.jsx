@@ -4,7 +4,7 @@ import { Mail, PhoneCall, Plus, User, Users, IndianRupee, Calendar } from 'lucid
 import { useUser } from '../../../context/UserContext'
 const Tourdetailinfo = (props) => {
   const data = props.data
-  const id=data._id
+  const id = data?._id
   const { setTourdetailinfo } = useUser();
   console.log(data)
   const [tourstatus,setTourstatus] = useState(data.status)
