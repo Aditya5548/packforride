@@ -18,7 +18,7 @@ const profileinfo = (props) => {
   return (
     <div className='fixed top-0 left-0 w-screen h-screen bg-white/90 z-40'>
       <div className='flex justify-center items-center h-full'>
-        <div className=' flex flex-col w-9/10 md:w-[300px]  py-2 bg-gray-200'>
+        <div className=' flex flex-col w-9/10 md:w-[300px] py-2 bg-gray-200 shadow-lg'>
           <div className='flex flex-col gap-1 px-5 py-1'>
             <button className="text-2xl text-end cursor-pointer" onClick={() => { setProfilepanel(false) }}>X</button>
             <h1 className="text-2xl text-center font-bold">Profile Detail</h1>

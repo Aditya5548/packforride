@@ -11,7 +11,8 @@ import upload_area from './upload_area.png';
 import logout from './logout.png';
 import dropdown from './dropdown.png';
 import google_icon from './google_icon.png';
-
+import call_icon from './call_icon.png';
+import whatsapp_icon from './whatsapp_icon.png';
 export const assets = {
     facebook_icon,
     googleplus_icon,
@@ -25,5 +26,7 @@ export const assets = {
     upload_area,
     logout,
     dropdown,
-    google_icon
+    google_icon,
+    call_icon,
+    whatsapp_icon
     }

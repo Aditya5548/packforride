@@ -27,7 +27,7 @@ const orderplaced = () => {
               return (
                 <div key={index} className='p-2'>
 
-                  <div className='flex flex-col justify-center bg-gray-50 max-w-[400px] min-h-[310px] px-4 py-2 rounded-md shadow-gray-700 shadow-md'>
+                  <div className='flex flex-col justify-center bg-gray-50 max-w-[400px] md:h-[330px] px-4 py-2 rounded-md shadow-gray-700 shadow-md'>
                     <p> <b>Tourname: </b> {order.tourname}</p>
                     <p><b>name: </b> {order.name}</p>
                     <p><b>No of Peoples:  </b>{order.noofPeople}</p>

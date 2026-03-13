@@ -7,7 +7,8 @@ import { useUser } from '../context/UserContext';
 import { assets } from '@/assets/assets';
 import Image from 'next/image';
 import { signOut, useSession } from 'next-auth/react';
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/router';
+import Link from 'next/link';
 const Navbar = () => {   
     const { showhide, setShowhide } = useUser();
     const { showhideoptions, setShowhideoptions } = useUser();
@@ -78,6 +79,12 @@ const Navbar = () => {
                             </div>
                     }
                     { profilepanel && <Profileinfo/> }
+                    <div className='flex fixed flex-col bottom-2 right-2 items-center'>
+                        
+                        <Link href="tel:+917376219758"><Image src={assets.call_icon} alt="Example image" className='w-[50px] h-[40px] md:w-[65px] md:h-[50px]'/></Link>
+                        <Link href="https://wa.me/+919005825347"><Image src={assets.whatsapp_icon} alt="Example image" className='w-[60px] h-[40px] md:w-[80px] md:h-[50px]'/></Link>
+                        <p className='pb-2 font-medium'>Assistant</p>
+                    </div>
                 </div>
             </div>
  
