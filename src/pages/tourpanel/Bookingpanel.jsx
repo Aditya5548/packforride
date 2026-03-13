@@ -74,6 +74,22 @@ const Bookingpanel = ({ totalamount, passenger, tourdata, tourslot }) => {
     }
   };
 
+    const phonenofilter = (e) => {
+    const value = e.target.value;
+
+    if (value.length <= 10) {
+      setPhoneno(value);
+    }
+  };
+
+      const agefilter = (e) => {
+    const value = e.target.value;
+
+    if (value.length <= 2) {
+      setAge(value);
+    }
+  };
+
   return (
     <div className="fixed top-0 left-0 w-screen h-screen bg-white/90 z-40">
       <div className="flex justify-center items-center h-full">
@@ -158,7 +174,7 @@ const Bookingpanel = ({ totalamount, passenger, tourdata, tourslot }) => {
                 value={age}
                 min={18}
                 max={70}
-                onChange={(e) => setAge(e.target.value)}
+                onChange={agefilter}
                 required
               />
             </p>
@@ -177,17 +193,10 @@ const Bookingpanel = ({ totalamount, passenger, tourdata, tourslot }) => {
 
             <p className="flex gap-2 items-center bg-white mx-5 my-2 px-3 py-1">
               <PhoneCall />
-              <input
-                className="outline-none px-5 py-1 w-full"
-                type="text"
-                placeholder="Phone No"
-                value={phoneno}
-                onChange={(e) => setPhoneno(e.target.value)}
-                required
-              />
+               <input type="number" pattern="[0-9]{10}" minLength={10} maxLength={10} placeholder='Phone No' className="outline-none px-5 py-1 w-full" name="phoneno" value={phoneno} onChange={phonenofilter} required />
             </p>
 
-            <div className="flex gap-5 text-lg bg-white my-2 mx-10 rounded-lg px-2 py-2 justify-center">
+            <div className="flex gap-5 text-lg bg-white my-2 mx-10 rounded-lg px-2 py-2 justify-center items-center">
 
               <label>
                 Full Payment
@@ -227,13 +236,15 @@ const Bookingpanel = ({ totalamount, passenger, tourdata, tourslot }) => {
                 ? `${totalamount} + GST (18%)`
                 : "500"}
             </p>
-
+            <p className="flex justify-center">
             <button
               type="submit"
               className="bg-red-600 px-5 text-white font-bold self-center rounded-lg py-2 my-3 cursor-pointer"
             >
               Proceed For Payment
             </button>
+            </p>
+            
 
           </form>
 

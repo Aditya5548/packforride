@@ -1,4 +1,4 @@
-; import Image from "next/image";
+import Image from "next/image";
 import { useRouter } from 'next/router';
 import { assets } from '../../assets/assets';
 import Footer from '../../Components/Footer';
@@ -97,7 +97,7 @@ const page = () => {
           <div className="flex flex-col pt-3 items-center w-full bg-gray-50 rounded-lg">
             <p className='text-xl font-semibold py-1'>Calculate Trip Cost: </p>
             <div className="flex flex-col gap-2 pt-3">
-              <h1><span className="w-1/2 font-bold">No of Peoples : </span><input type="number" placeholder="No. of People" className="border border-gray-200 outline-none px-2 bg-white" name="noofpeople" value={noofpeople} onChange={(e) => { setNoofPeople(e.target.value) }} /></h1>
+              <h1 className="flex"><span className="font-bold hidden md:block">No of Peoples : </span><input type="number" placeholder="No. of People" className="border border-gray-200 outline-none px-2 bg-white" name="noofpeople" value={noofpeople} onChange={(e) => { setNoofPeople(e.target.value) }} /></h1>
               <div className="flex">
                 <h1 className="w-1/2 font-bold">Fooding : </h1>
                 <select name="accessries" className="px-4 outline-none">
@@ -137,7 +137,7 @@ const page = () => {
               <div className="flex  items-center flex-wrap gap-3">
                 <input type="search" placeholder="Enter PickUP Location" className="max-w-full outline-none border p-2 border-gray-300 rounded-md md:w-1/2" value={search} onChange={(e) => setSearch(e.target.value)}/>
                 
-                <h1 className="text-lg font-bold">Select Date:  </h1>
+                <h1 className="text-lg font-bold hidden md:block">Select Date:  </h1>
                 <DatePicker
                   selected={selectedDate}
                   onChange={(date) => setSelectedDate(date)}
@@ -146,7 +146,7 @@ const page = () => {
                 />
                 
               </div>
-              <div className='flex py-3 flex-wrap gap-2 justify-between'>
+              <div className='flex py-3 flex-wrap gap-2 justify-center items-center'>
               {
               filteredslots.map((item,index)=>{
               return(
@@ -171,7 +171,7 @@ const page = () => {
                     </div>
                   </div>
                   <p className="flex gap-2 py-1 font-bold">Faclities: {item.facilities.wifi && <Wifi className="text-gray-600" />} {item.facilities.charging && <PlugZap className="text-gray-600" />} {item.facilities.ac && <AirVent className="text-gray-600" />}{item.facilities.bed && <BedSingle className="text-gray-600" />}</p>
-                  <button onClick={() => {paymentdashopen(item);setSelectedslot(item)}} className='bg-gray-900 self-center text-white font-bold px-3 py-1 text-md rounded-lg md:text-lg'>Book Now</button>
+                  <button onClick={() => {paymentdashopen(item);setSelectedslot(item)}} className='bg-gray-900 self-center text-white font-bold px-3 py-1 text-md rounded-lg md:text-lg cursor-pointer'>Book Now</button>
                  </div>
               )
               })
