@@ -4,10 +4,10 @@ import { useRouter } from "next/router";
 import Image from 'next/image';
 import { assets } from '../assets/assets';
 import { format } from 'timeago.js';
-const Tourlist = (data) => {
+const Tourlist = ({tourplaces}) => {
   const [menu, setMenu] = useState("All");
   const [search , setSearch] =useState("");
-  const tours = data.tours.tours?.filter((item) =>
+  const tours = tourplaces?.filter((item) =>
     item.tourname.toLowerCase().includes(search.toLowerCase()) ||
     item.description.toLowerCase().includes(search.toLowerCase())
   );

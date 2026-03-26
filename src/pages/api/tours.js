@@ -13,17 +13,24 @@ export const config = {
 export default async function handler(req, res) {
   await connectDB();
   if (req.method === 'GET') {
+    const {city}=req.query;
+    console.log(city)
+    let tours;
     try {
-      const decoded = jwt.verify(req.query.token, process.env.NEXT_PUBLIC_API_URL)
-      if (decoded.id === process.env.NEXT_PUBLIC_SECRET_KEY) {
-          const blogs = await Tourplace.find({}).sort({ _id: -1 });
-          return res.status(200).json(blogs);
-      } else {
-        return res.status(200).json({msg:"Unauthorised API Access"});
+      if (city) {
+        const cityTours = await Tourplace.find({ city });
+        const otherTours = await Tourplace.find({ city: { $ne: city } });
+        tours = [...cityTours, ...otherTours];
+        return res.status(200).json(tours);
+      } 
+      else {
+        const tours = await Tourplace.find({}).sort({ _id: -1 });
+        return res.status(200).json(tours);
       }
     }
     catch (error) {
-      return res.status(200).json({msg:"Unauthorised API Access"});
+      console.log(error)
+      return res.status(200).json({ msg: "Error Occured"  });
     }
   }
 
@@ -42,24 +49,25 @@ export default async function handler(req, res) {
             description: fields.description?.[0],
             category: fields.category?.[0],
             image: imgUrl,
-            transport: fields.transport?.[0],
-            room: fields.room?.[0],
-            fooding: fields.fooding?.[0],
-            location: fields.location?.[0],
-            tourhostname: "Aditya kumar Yadav",
-            tourhostid: "3989fiidsjfij", 
-            cost: fields.cost?.[0],
+            city: fields.city?.[0],
+            tourhostid: "Aditya9377",
+            services: {transport: fields.transport?.[0],room: fields.room?.[0],fooding: fields.fooding?.[0]},
+            bookingcount: 0,
+            interactions: {likes: 0,dislikes: 0,comments: 0,shares: 0,views: 0},
+            status: "active",
+            
           };
           const response = await Tourplace.create(Tour);
           return res.status(200).json({ status: 'success', msg: response });
 
         }
         catch (error) {
-          return res.status(200).json({ status: 'failed', msg: "image is not uploaded" ,err:error});
+          console.log(error)
+          return res.status(200).json({ status: 'failed', msg: "image is not uploaded", err: error });
         }
       }
       catch (e) {
-        return res.status(200).json({ status: 'failed', msg: "Invaild Login Credential"});
+        return res.status(200).json({ status: 'failed', msg: "Invaild Login Credential" });
       }
     });
   }

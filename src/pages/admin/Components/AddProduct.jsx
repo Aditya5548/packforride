@@ -10,7 +10,6 @@ const AddProduct = () => {
   const [data, setData] = useState({
     tourname: "",
     description: "",
-    cost:"",
   })
   const onChangeHandler = (e) => {
     const name = e.target.name;
@@ -27,10 +26,9 @@ const AddProduct = () => {
     formdata.append('transport', data.transport)
     formdata.append('room', data.room)
     formdata.append('fooding', data.fooding)
-    formdata.append('location', data.location)
+    formdata.append('city', data.city)
     formdata.append('image', image)
     formdata.append('token', token)
-    formdata.append('cost', data.cost)
     const response = await axios.post('/api/tours', formdata)
     if (response.data.status == "success") {
       toast.success('Tour Added Successfully')
@@ -65,7 +63,7 @@ const AddProduct = () => {
           <option value="Cultural">Cultural</option>
           <option value="Weekend">Weekend</option>
           <option value="Adventure">Adventure</option>
-          <option value="International">International</option>
+          <option value="Others">Others</option>
         </select>
 
         <select name="transport" onChange={onChangeHandler} value={data.transport} className='w-full sm:w-[500px] mt-2 px-4 py-2 border text-grey-500'>
@@ -85,8 +83,7 @@ const AddProduct = () => {
           <option value="Yes">Yes</option>
           <option value="No">No</option>
         </select>
-         <input className="w-full sm:w-[500px] mt-2 px-4 py-3 border" name='cost' onChange={onChangeHandler} value={data.cost} type="text" placeholder='Enter Cost person' required />
-        <input className="w-full sm:w-[500px] mt-2 px-4 py-3 border" name='location' onChange={onChangeHandler} value={data.location} type="text" placeholder='Add Location' required />
+        <input className="w-full sm:w-[500px] mt-2 px-4 py-3 border" name='city' onChange={onChangeHandler} value={data.location} type="text" placeholder='Add City' required />
         <button type='submit' className='mt-4 px-10 py-2 bg-black text-white cursor-pointer'>ADD</button>
       </form>
     </>
