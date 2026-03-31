@@ -10,7 +10,10 @@ const AddProduct = () => {
   const [data, setData] = useState({
     tourname: "",
     description: "",
+    lon:"",
+    lat:"",
   })
+  console.log(data)
   const onChangeHandler = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -29,6 +32,8 @@ const AddProduct = () => {
     formdata.append('city', data.city)
     formdata.append('image', image)
     formdata.append('token', token)
+    formdata.append('longitute', data.lon)
+    formdata.append('latitute', data.lat)
     const response = await axios.post('/api/tours', formdata)
     if (response.data.status == "success") {
       toast.success('Tour Added Successfully')
@@ -84,6 +89,10 @@ const AddProduct = () => {
           <option value="No">No</option>
         </select>
         <input className="w-full sm:w-[500px] mt-2 px-4 py-3 border" name='city' onChange={onChangeHandler} value={data.location} type="text" placeholder='Add City' required />
+
+        <input className="w-full sm:w-[500px] mt-2 px-4 py-3 border" name='lon' onChange={onChangeHandler} value={data.lon} type="text" placeholder='Add longitute of tour place' required />
+        <input className="w-full sm:w-[500px] mt-2 px-4 py-3 border" name='lat' onChange={onChangeHandler} value={data.lat} type="text" placeholder='Add latitute of tour place' required />
+        
         <button type='submit' className='mt-4 px-10 py-2 bg-black text-white cursor-pointer'>ADD</button>
       </form>
     </>

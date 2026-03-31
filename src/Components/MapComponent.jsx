@@ -66,14 +66,23 @@ const endIcon = L.icon({
   iconAnchor: [17, 35],
 });
 
-export default function Page() {
-  return <MapComponent />;
+// ✅ MAIN PAGE
+export default function Page({ startPos }) {
+  return <MapComponent startPos={startPos} />;
 }
 
-function MapComponent({ startPos = [27.1751, 78.0421] }) {
+// 🗺️ MAP COMPONENT
+function MapComponent({ startPos }) {
   const { endPos, setEndPos, distance, setDistance } = useUser();
+
   const [isClient, setIsClient] = useState(false);
   const [search, setSearch] = useState("");
+
+  // ✅ Convert string → number
+  const parsedStartPos =
+    startPos && startPos.length === 2
+      ? [parseFloat(startPos[0]), parseFloat(startPos[1])]
+      : [28.6139, 77.2090]; // fallback (Delhi)
 
   useEffect(() => setIsClient(true), []);
 
@@ -84,20 +93,20 @@ function MapComponent({ startPos = [27.1751, 78.0421] }) {
         setEndPos([pos.coords.latitude, pos.coords.longitude]);
       },
       () => {
-        setEndPos([28.6139, 77.2090]);
+        setEndPos(parsedStartPos);
       }
     );
   }, []);
 
   // 📏 Distance calc
   useEffect(() => {
-    if (startPos && endPos) {
-      const dist = getDistance(startPos, endPos);
+    if (parsedStartPos && endPos) {
+      const dist = getDistance(parsedStartPos, endPos);
       setDistance(dist.toFixed(2));
     }
-  }, [startPos, endPos]);
+  }, [parsedStartPos, endPos]);
 
-  // 🔍 Search with Toast
+  // 🔍 Search
   const handleSearch = async () => {
     try {
       const res = await fetch(
@@ -107,12 +116,15 @@ function MapComponent({ startPos = [27.1751, 78.0421] }) {
       const data = await res.json();
 
       if (data.length > 0) {
-        setEndPos([parseFloat(data[0].lat), parseFloat(data[0].lon)]);
+        setEndPos([
+          parseFloat(data[0].lat),
+          parseFloat(data[0].lon),
+        ]);
       } else {
-        toast.error("Try Other Location:")
+        toast.error("Location not found");
       }
-    } catch (error) {
-      toast.error("Not Found")
+    } catch {
+      toast.error("Error fetching location");
     }
   };
 
@@ -120,9 +132,7 @@ function MapComponent({ startPos = [27.1751, 78.0421] }) {
 
   return (
     <div className="w-full">
-
-      {/* ✅ Toast Container */}
-      <ToastContainer position="top-center" />
+      <ToastContainer position="top-right" />
 
       {/* 📱 Mobile Search */}
       <div className="flex sm:hidden gap-2 mb-2">
@@ -136,7 +146,7 @@ function MapComponent({ startPos = [27.1751, 78.0421] }) {
         <button
           onClick={handleSearch}
           disabled={!search.trim()}
-          className="bg-blue-600 text-white px-4 rounded-lg disabled:opacity-50"
+          className="bg-blue-600 text-white px-4 rounded-lg"
         >
           Go
         </button>
@@ -144,12 +154,17 @@ function MapComponent({ startPos = [27.1751, 78.0421] }) {
 
       {/* 🗺️ Map */}
       <div className="relative w-full h-[350px] sm:h-[500px] rounded-xl overflow-hidden z-30">
-
-        <MapContainer center={startPos} zoom={7} className="h-full w-full">
+        <MapContainer
+          center={parsedStartPos}
+          zoom={7}
+          className="h-full w-full"
+        >
           <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
-          <FitBounds startPos={startPos} endPos={endPos} />
-          <Marker position={startPos} icon={startIcon} />
+          <FitBounds startPos={parsedStartPos} endPos={endPos} />
+
+          <Marker position={parsedStartPos} icon={startIcon} />
+
           <LocationSelector setEndPos={setEndPos} />
 
           {endPos && (
@@ -165,24 +180,29 @@ function MapComponent({ startPos = [27.1751, 78.0421] }) {
                   },
                 }}
               />
-              <Polyline positions={[startPos, endPos]} />
+
+              <Polyline
+                positions={[parsedStartPos, endPos]}
+                pathOptions={{ color: "blue", weight: 4 }}
+              />
             </>
           )}
         </MapContainer>
 
         {/* 💻 Desktop Search */}
-        <div className="hidden sm:flex absolute top-3 left-1/2 -translate-x-1/2 z-[1000] w-[400px] bg-white shadow-lg rounded-full overflow-hidden">
+        <div className="hidden sm:flex absolute top-3 left-1/2 -translate-x-1/2 z-[1000] w-[400px] bg-white shadow-lg rounded-full overflow-hidden border border-gray-200/50 backdrop-blur-md bg-white/60 rounded-xl shadow-sm">
           <input
             type="text"
             placeholder="Search location..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleSearch()}
             className="flex-1 px-5 py-3 outline-none"
           />
           <button
             onClick={handleSearch}
             disabled={!search.trim()}
-            className="bg-blue-600 text-white px-5 disabled:opacity-50"
+            className="bg-blue-600 text-white px-5"
           >
             Search
           </button>
@@ -202,7 +222,7 @@ function MapComponent({ startPos = [27.1751, 78.0421] }) {
 
         {/* 💻 Desktop Distance */}
         {distance && (
-          <div className="hidden sm:flex absolute bottom-4 left-1/2 -translate-x-1/2 bg-white shadow-xl rounded-xl px-6 py-3 items-center gap-3 z-[1000]">
+          <div className="hidden sm:flex absolute bottom-4 left-1/2 -translate-x-1/2 bg-white shadow-xl rounded-xl px-6 py-3 items-center gap-3 z-[1000] border border-gray-200/50 backdrop-blur-md bg-white/60 rounded-xl shadow-sm">
             <div className="bg-blue-100 text-blue-600 p-2 rounded-full">
               📍
             </div>
@@ -218,7 +238,7 @@ function MapComponent({ startPos = [27.1751, 78.0421] }) {
 
       {/* 📱 Mobile Distance */}
       {distance && (
-        <div className="sm:hidden mt-3 w-full bg-white shadow-xl rounded-xl px-4 py-3 flex items-center gap-3">
+        <div className="sm:hidden mt-3 bg-white shadow-xl rounded-xl px-4 py-3 flex items-center gap-3">
           <div className="bg-blue-100 text-blue-600 p-2 rounded-full">
             📍
           </div>
@@ -230,7 +250,6 @@ function MapComponent({ startPos = [27.1751, 78.0421] }) {
           </div>
         </div>
       )}
-
     </div>
   );
 }

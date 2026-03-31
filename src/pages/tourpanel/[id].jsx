@@ -13,8 +13,6 @@ import dynamic from "next/dynamic";
 const MapComponentInner = dynamic(() => import('../../Components/MapComponent'), {
   ssr: false,
 });
-import { AirVent, ArrowRight, BedSingle, BusFront, Clock, MapPin, PlugZap, User, Wifi } from 'lucide-react';
-
 import "react-datepicker/dist/react-datepicker.css";
 const page = () => {
   const [tourslots, setTourslots] = useState([])
@@ -35,7 +33,8 @@ const {endPos, setEndPos} = useUser(null);
   const router = useRouter();
   const data = router.query;
 const Calculatecost = () => {
-  const people = Number(noofpeople) || 1;
+if(noofpeople>0){
+    const people = Number(noofpeople) || 1;
   const dist = Number(distance) || 0;
 
   // 🚗 1. Distance slab pricing (₹/km)
@@ -91,6 +90,11 @@ const Calculatecost = () => {
     totalcost: Math.round(totalcost)
   });
   setDisplayDetail(true)
+}
+else{
+  toast.error("Enter No of People")
+}
+  
 };
   const paymentdashopen = () => {
     const token = localStorage.getItem('usertoken')
@@ -125,7 +129,6 @@ const Calculatecost = () => {
     data ? <>
       <div className='bg-gray-300 pb-5'>
         <Navbar />
-        <ToastContainer />
         <div className="text-center mb-20 mt-5">
           <h1 className="text-xl sm:text-2xl font-semibold max-w-[700px] mx-auto pb-2">{data.category} Tour</h1>
         </div>
@@ -160,7 +163,7 @@ const Calculatecost = () => {
           {paymentpanel && <Bookingpanel charges={tourcost} locationid={endPos} facilities={facilities} passenger={noofpeople} tourdata={data} />}
 
           <div className="flex flex-col py-5 md:py-10">
-            <MapComponentInner startPos={[26.8536, 80.9890]} />
+            <MapComponentInner startPos={data.lonlat} />
             <div />
 
           <div className="w-full max-w-xl mx-auto my-10 p-5 rounded-xl shadow-md bg-gray-50">

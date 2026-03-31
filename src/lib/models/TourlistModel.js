@@ -10,9 +10,10 @@ const schema = new mongoose.Schema({
     interactions:{type: Object},
     bookingcount:{type:Number},
     status:{type:String,required:true},
+    lonlat:{type:Array,required:true},
 },
-{ timestamps : true}
+{ timestamps : true} 
 
 )
-const TourlistModel =mongoose.models.tourplaceslist || mongoose.model('tourplaceslist',schema);
+const TourlistModel =mongoose.models.peoplestourlist || mongoose.model('peoplestourlist',schema);
 export default TourlistModel;

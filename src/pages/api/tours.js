@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import formidable from 'formidable';
 import path from 'path';
 import Tourplace from '../../lib/models/TourlistModel';
+import { Data } from '@react-google-maps/api';
 const fs = require('fs');
 export const config = {
   api: {
@@ -51,12 +52,14 @@ export default async function handler(req, res) {
             image: imgUrl,
             city: fields.city?.[0],
             tourhostid: "Aditya9377",
+           lonlat: [parseFloat(fields.longitute), parseFloat(fields.latitute)],
             services: {transport: fields.transport?.[0],room: fields.room?.[0],fooding: fields.fooding?.[0]},
             bookingcount: 0,
             interactions: {likes: 0,dislikes: 0,comments: 0,shares: 0,views: 0},
             status: "active",
             
           };
+          console.log(Tour)
           const response = await Tourplace.create(Tour);
           return res.status(200).json({ status: 'success', msg: response });
 

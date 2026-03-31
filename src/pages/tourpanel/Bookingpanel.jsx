@@ -1,13 +1,12 @@
 "use client";
-
 import React, { useState } from "react";
 import axios from "axios";
 import { Mail, PhoneCall, Plus, User, Users, MapPin } from "lucide-react";
 import { useUser } from "@/context/UserContext";
 import { ToastContainer, toast } from "react-toastify";
+import { useRouter } from 'next/router'
 
 const Bookingpanel = ({ charges, passenger, tourdata, facilities ,locationid}) => {
-  console.log(locationid)
   const { setPaymentPanel } = useUser();
   const { tourname, _id } = tourdata;
   const [address,setAddress]=useState("")
@@ -16,25 +15,25 @@ const Bookingpanel = ({ charges, passenger, tourdata, facilities ,locationid}) =
   const [gender, setGender] = useState("");
   const [email, setEmail] = useState("");
   const [phoneno, setPhoneno] = useState("");
-
   const [loading, setLoading] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
+   const router = useRouter();
+
+  const goHome = () => {
+    router.push('/');
+  };
 
   const regcode = async (e) => {
   e.preventDefault();
-
   setLoading(true);
-
   const token =
     typeof window !== "undefined"
       ? localStorage.getItem("usertoken")
       : null;
-
   try {
     const userinfo = await axios.get("/api/user", {
       params: { token: token },
     });
-
     const data = {
       name,
       age,
@@ -273,13 +272,14 @@ const Bookingpanel = ({ charges, passenger, tourdata, facilities ,locationid}) =
 
     {/* Button */}
     <button
-      className="mt-8 bg-white text-green-600 px-6 py-2 rounded-full font-semibold shadow-md hover:scale-105 transition"
+      className="mt-4 bg-white text-green-600 px-6 py-2 rounded-full font-semibold shadow-md hover:scale-105 transition"
       onClick={() => {
         setPaymentSuccess(false);
         setPaymentPanel(false);
+        goHome();
       }}
     >
-      Done
+      Back to Home
     </button>
 
   </div>
