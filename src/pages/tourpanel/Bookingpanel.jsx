@@ -2,77 +2,73 @@
 
 import React, { useState } from "react";
 import axios from "axios";
-import { Mail, PhoneCall, Plus, User, Users } from "lucide-react";
+import { Mail, PhoneCall, Plus, User, Users, MapPin } from "lucide-react";
 import { useUser } from "@/context/UserContext";
 import { ToastContainer, toast } from "react-toastify";
 
-const Bookingpanel = ({ totalamount, passenger, tourdata, tourslot }) => {
-
+const Bookingpanel = ({ charges, passenger, tourdata, facilities ,locationid}) => {
+  console.log(locationid)
   const { setPaymentPanel } = useUser();
-
-  if (!tourdata || !tourslot) return null;
-
   const { tourname, _id } = tourdata;
-
-  const [paymenttype, setPaymentType] = useState("Full");
-  const [orderamount, setOrderamount] = useState(totalamount);
-  const [remainingamount, setRemainingamount] = useState(0);
-
+  const [address,setAddress]=useState("")
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
   const [gender, setGender] = useState("");
   const [email, setEmail] = useState("");
   const [phoneno, setPhoneno] = useState("");
 
+  const [loading, setLoading] = useState(false);
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
+
   const regcode = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    const token =
-      typeof window !== "undefined"
-        ? localStorage.getItem("usertoken")
-        : null;
+  setLoading(true);
 
-    try {
-      const userinfo = await axios.get("/api/user", {
-        params: { token: token },
-      });
+  const token =
+    typeof window !== "undefined"
+      ? localStorage.getItem("usertoken")
+      : null;
 
-      const data = {
-        name,
-        age,
-        gender,
-        email,
-        phoneno,
-        orderamount,
-        remainingamount,
-        passenger,
-        tourname,
-        tourid: _id,
-        paymenttype,
-        userid: userinfo.data.userid,
-        tourstartdate: tourslot.tourStartDate,
-        tourenddate: tourslot.tourEndDate,
-        boardingtime: tourslot.boardingTime,
-        pickupaddress: tourslot.location,
-        vehicletype: tourslot.vehicleType,
-        facilities: tourslot.facilities,
-        slotid: tourslot.id,
-      };
+  try {
+    const userinfo = await axios.get("/api/user", {
+      params: { token: token },
+    });
 
-      const response = await axios.post("/api/BookingTour", data);
+    const data = {
+      name,
+      age,
+      gender,
+      email,
+      phoneno,
+      totalamount:charges.totalcost+1000,
+      passenger,
+      tourname,
+      tourid: _id,
+      userid: userinfo.data.userid,
+      locationid: locationid,
+      pickupaddress: address,
+      facilities: facilities,
+    };
+
+    const response = await axios.post("/api/BookingTour", data);
+
+    // ⏳ 10 sec loader
+    setTimeout(() => {
+      setLoading(false);
 
       if (response.data.success) {
-        setPaymentPanel(false);
-        toast.success("Tour Booked Successfully");
+        setPaymentSuccess(true); // show success screen
       } else {
-        toast.error("Fill correct details");
+        toast.error("Payment Failed");
       }
+    }, 4000);
 
-    } catch (error) {
-      console.log(error);
-      toast.error("Something went wrong");
-    }
-  };
+  } catch (error) {
+    setLoading(false);
+    toast.error("Something went wrong");
+  }
+};
 
     const phonenofilter = (e) => {
     const value = e.target.value;
@@ -91,7 +87,10 @@ const Bookingpanel = ({ totalamount, passenger, tourdata, tourslot }) => {
   };
 
   return (
-    <div className="fixed top-0 left-0 w-screen h-screen bg-white/90 z-40">
+
+    
+
+    <div className="fixed top-0 left-0 w-screen h-screen bg-white/90 z-100">
       <div className="flex justify-center items-center h-full">
 
         <ToastContainer />
@@ -116,7 +115,6 @@ const Bookingpanel = ({ totalamount, passenger, tourdata, tourslot }) => {
             <p className="flex gap-2 items-center mx-5 my-2 px-3 py-1">
               <b>Tourname:</b> {tourname}
             </p>
-
             <p className="flex gap-2 items-center bg-white mx-5 my-2 px-3 py-1">
               <User />
               <input
@@ -130,39 +128,16 @@ const Bookingpanel = ({ totalamount, passenger, tourdata, tourslot }) => {
             </p>
 
             <div className="flex gap-3 bg-white mx-5 my-2 px-3 py-1">
-
-              <Users />
-
-              <label>
-                Male
-                <input
-                  type="radio"
-                  name="Gender"
-                  value="male"
-                  onChange={(e) => setGender(e.target.value)}
-                />
-              </label>
-
-              <label>
-                Female
-                <input
-                  type="radio"
-                  name="Gender"
-                  value="female"
-                  onChange={(e) => setGender(e.target.value)}
-                />
-              </label>
-
-              <label>
-                Other
-                <input
-                  type="radio"
-                  name="Gender"
-                  value="other"
-                  onChange={(e) => setGender(e.target.value)}
-                />
-              </label>
-
+      <Users className="text-gray-500" />
+      <label className="text-sm">
+        <input type="radio" name="Gender" value="male" onChange={(e) => setGender(e.target.value)} /> Male
+      </label>
+      <label className="text-sm">
+        <input type="radio" name="Gender" value="female" onChange={(e) => setGender(e.target.value)} /> Female
+      </label>
+      <label className="text-sm">
+        <input type="radio" name="Gender" value="other" onChange={(e) => setGender(e.target.value)} /> Other
+      </label>
             </div>
 
             <p className="flex gap-2 items-center bg-white mx-5 my-2 px-3 py-1">
@@ -175,6 +150,17 @@ const Bookingpanel = ({ totalamount, passenger, tourdata, tourslot }) => {
                 min={18}
                 max={70}
                 onChange={agefilter}
+                required
+              />
+            </p>
+            <p className="flex gap-2 items-center bg-white mx-5 my-2 px-3 py-1">
+              <MapPin />
+              <input
+                className="outline-none px-5 py-1 w-full"
+                type="text"
+                placeholder="Address"
+                value={address}
+                onChange={(e)=>{setAddress(e.target.value)}}
                 required
               />
             </p>
@@ -195,54 +181,16 @@ const Bookingpanel = ({ totalamount, passenger, tourdata, tourslot }) => {
               <PhoneCall />
                <input type="number" pattern="[0-9]{10}" minLength={10} maxLength={10} placeholder='Phone No' className="outline-none px-5 py-1 w-full" name="phoneno" value={phoneno} onChange={phonenofilter} required />
             </p>
-
-            <div className="flex gap-5 text-lg bg-white my-2 mx-10 rounded-lg px-2 py-2 justify-center items-center">
-
-              <label>
-                Full Payment
-                <input
-                  type="radio"
-                  name="paymenttype"
-                  value="Full"
-                  checked={paymenttype === "Full"}
-                  onChange={() => {
-                    setPaymentType("Full");
-                    setOrderamount(totalamount);
-                    setRemainingamount(0);
-                  }}
-                />
-              </label>
-
-              <label>
-                Registration
-                <input
-                  type="radio"
-                  name="paymenttype"
-                  value="registration"
-                  checked={paymenttype === "registration"}
-                  onChange={() => {
-                    setPaymentType("registration");
-                    setOrderamount(500);
-                    setRemainingamount(totalamount);
-                  }}
-                />
-              </label>
-
-            </div>
-
-            <p className="flex gap-2 items-center mx-5 my-2 px-3 py-1">
-              <b>Rupees:</b>
-              {paymenttype === "Full"
-                ? `${totalamount} + GST (18%)`
-                : "500"}
-            </p>
+            <p className="flex gap-2 items-center mx-5 px-3 py-1 mt-4">
+              <b>Total Amount:</b> ₹ {charges.totalcost+1000}
+            </p>      
             <p className="flex justify-center">
-            <button
-              type="submit"
-              className="bg-red-600 px-5 text-white font-bold self-center rounded-lg py-2 my-3 cursor-pointer"
-            >
-              Proceed For Payment
-            </button>
+    <button
+      type="submit"
+      className="bg-gradient-to-r from-red-500 to-pink-600 text-white rounded-lg font-semibold hover:scale-105 transition px-4 py-2 my-4"
+    >
+      Proceed For Payment →
+    </button>
             </p>
             
 
@@ -250,9 +198,102 @@ const Bookingpanel = ({ totalamount, passenger, tourdata, tourslot }) => {
 
         </div>
 
+{loading && (
+  <div className="fixed top-0 left-0 w-screen h-screen bg-gradient-to-br from-blue-600 to-indigo-700 flex flex-col justify-center items-center z-50 text-white">
+
+    {/* Spinner */}
+    <div className="relative flex justify-center items-center">
+      <div className="w-20 h-20 border-4 border-white/30 rounded-full"></div>
+      <div className="absolute w-20 h-20 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+    </div>
+
+    {/* Heading */}
+    <h1 className="text-2xl font-bold mt-6 tracking-wide">
+      Processing Payment
+    </h1>
+
+    {/* Sub text */}
+    <p className="mt-2 text-blue-100 text-center px-6">
+      Please wait while we confirm your payment...
+    </p>
+
+    {/* Progress Bar */}
+    <div className="w-64 h-2 bg-white/30 rounded-full mt-6 overflow-hidden">
+      <div className="h-full bg-white animate-[loading_10s_linear_forwards]"></div>
+    </div>
+
+    {/* Bottom Note */}
+    <p className="text-sm mt-4 text-blue-200">
+      Do not refresh or close this page
+    </p>
+
+    {/* Animation style */}
+    <style jsx>{`
+      @keyframes loading {
+        from { width: 0%; }
+        to { width: 100%; }
+      }
+    `}</style>
+
+  </div>
+)}
+
+{paymentSuccess && (
+  <div className="fixed top-0 left-0 w-screen h-screen bg-gradient-to-br from-green-300 to-green-400 flex flex-col justify-center items-center z-50 text-white">
+    
+    {/* Success Circle */}
+    <div className="bg-white rounded-full w-24 h-24 flex items-center justify-center shadow-lg animate-bounce">
+      <svg
+        className="w-12 h-12 text-green-600"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="3"
+        viewBox="0 0 24 24"
+      >
+        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+      </svg>
+    </div>
+
+    {/* Title */}
+    <h1 className="text-3xl font-bold mt-6 tracking-wide">
+      Payment Successful
+    </h1>
+
+    {/* Subtitle */}
+    <p className="mt-2 text-lg text-green-50 text-center px-5">
+      <span>Your booking has been confirmed 🎉</span> <br />
+      <span>Booking Detail Will shared Shorting in your email and Mobile Number</span>
+    </p>
+
+    {/* Details Box */}
+    <div className="bg-white/10 backdrop-blur-md mt-6 px-6 py-4 rounded-xl text-center">
+      <p className="text-sm">Amount Paid</p>
+      <h2 className="text-2xl font-bold mt-1">₹ {charges.totalcost+1000}</h2>
+    </div>
+
+    {/* Button */}
+    <button
+      className="mt-8 bg-white text-green-600 px-6 py-2 rounded-full font-semibold shadow-md hover:scale-105 transition"
+      onClick={() => {
+        setPaymentSuccess(false);
+        setPaymentPanel(false);
+      }}
+    >
+      Done
+    </button>
+
+  </div>
+)}
+
       </div>
     </div>
+
+
+
   );
 };
+
+
+
 
 export default Bookingpanel;

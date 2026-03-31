@@ -6,173 +6,231 @@ import {
   TileLayer,
   Marker,
   Polyline,
+  useMapEvents,
   useMap,
-  useMapEvent,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+import { useUser } from "@/context/UserContext";
+import L from "leaflet";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-// Map click handler to select END
-function EndSelector({ startPos, setEndPos, setDistance }) {
-  useMapEvent("click", (e) => {
-    if (startPos) {
-      const end = [e.latlng.lat, e.latlng.lng];
-      setEndPos(end);
-
-      const distance = getDistance(startPos, end);
-      setDistance(distance.toFixed(2));
-    }
-  });
-  return null;
-}
-
-// Change map view
-function ChangeView({ center }) {
-  const map = useMap();
-  map.setView(center, 13);
-  return null;
-}
-
-// Distance function (Haversine)
+// 📏 Distance function
 function getDistance(p1, p2) {
-  const R = 6371; // km
+  const R = 6371;
   const dLat = ((p2[0] - p1[0]) * Math.PI) / 180;
   const dLon = ((p2[1] - p1[1]) * Math.PI) / 180;
+
   const a =
     Math.sin(dLat / 2) ** 2 +
     Math.cos((p1[0] * Math.PI) / 180) *
       Math.cos((p2[0] * Math.PI) / 180) *
       Math.sin(dLon / 2) ** 2;
+
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
-export default function MapComponent() {
-  const [isClient, setIsClient] = useState(false);
+// 📍 Click selector
+function LocationSelector({ setEndPos }) {
+  useMapEvents({
+    click(e) {
+      setEndPos([e.latlng.lat, e.latlng.lng]);
+    },
+  });
+  return null;
+}
 
-  const [startName, setStartName] = useState("");
-  const [endName, setEndName] = useState("");
+// 📌 Auto fit
+function FitBounds({ startPos, endPos }) {
+  const map = useMap();
 
-  const [startPos, setStartPos] = useState(null);
-  const [endPos, setEndPos] = useState(null);
-  const [distance, setDistance] = useState(null);
-
-  // Initialize leaflet icons
   useEffect(() => {
-    setIsClient(true);
-    import("leaflet").then((L) => {
-      delete L.Icon.Default.prototype._getIconUrl;
-      L.Icon.Default.mergeOptions({
-        iconUrl:
-          "https://unpkg.com/leaflet@1.9.3/dist/images/marker-icon.png",
-        shadowUrl:
-          "https://unpkg.com/leaflet@1.9.3/dist/images/marker-shadow.png",
-      });
-    });
+    if (startPos && endPos) {
+      map.fitBounds([startPos, endPos], { padding: [50, 50] });
+    }
+  }, [startPos, endPos]);
+
+  return null;
+}
+
+// 🎯 Icons
+const startIcon = L.icon({
+  iconUrl: "https://cdn-icons-png.flaticon.com/512/684/684908.png",
+  iconSize: [35, 35],
+  iconAnchor: [17, 35],
+});
+
+const endIcon = L.icon({
+  iconUrl: "https://cdn-icons-png.flaticon.com/512/447/447031.png",
+  iconSize: [35, 35],
+  iconAnchor: [17, 35],
+});
+
+export default function Page() {
+  return <MapComponent />;
+}
+
+function MapComponent({ startPos = [27.1751, 78.0421] }) {
+  const { endPos, setEndPos, distance, setDistance } = useUser();
+  const [isClient, setIsClient] = useState(false);
+  const [search, setSearch] = useState("");
+
+  useEffect(() => setIsClient(true), []);
+
+  // 📍 Current location
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setEndPos([pos.coords.latitude, pos.coords.longitude]);
+      },
+      () => {
+        setEndPos([28.6139, 77.2090]);
+      }
+    );
   }, []);
 
-  // Get user's current location
+  // 📏 Distance calc
   useEffect(() => {
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const coords = [position.coords.latitude, position.coords.longitude];
-          setEndPos(coords);
-          if (startPos) {
-            setDistance(getDistance(startPos, coords).toFixed(2));
-          }
-        },
-        (err) => {
-          console.warn("Geolocation denied or not available", err);
-        }
-      );
+    if (startPos && endPos) {
+      const dist = getDistance(startPos, endPos);
+      setDistance(dist.toFixed(2));
     }
-  }, [startPos]); // Re-run if startPos changes
+  }, [startPos, endPos]);
+
+  // 🔍 Search with Toast
+  const handleSearch = async () => {
+    try {
+      const res = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${search}`
+      );
+
+      const data = await res.json();
+
+      if (data.length > 0) {
+        setEndPos([parseFloat(data[0].lat), parseFloat(data[0].lon)]);
+      } else {
+        toast.error("Try Other Location:")
+      }
+    } catch (error) {
+      toast.error("Not Found")
+    }
+  };
 
   if (!isClient) return null;
 
-  // Search location by name
-  const searchLocation = async (place, setFunc) => {
-    if (!place) return null;
-    const res = await fetch(
-      `https://nominatim.openstreetmap.org/search?format=json&q=${place}`
-    );
-    const data = await res.json();
-    if (data.length > 0) {
-      const coords = [parseFloat(data[0].lat), parseFloat(data[0].lon)];
-      setFunc(coords);
-      return coords;
-    } else {
-      alert("Location not found");
-      return null;
-    }
-  };
-
-  const handleStartSearch = async () => {
-    const coords = await searchLocation(startName, setStartPos);
-    if (coords && endPos) {
-      setDistance(getDistance(coords, endPos).toFixed(2));
-    }
-  };
-
-  const handleEndSearch = async () => {
-    const coords = await searchLocation(endName, setEndPos);
-    if (coords && startPos) {
-      setDistance(getDistance(startPos, coords).toFixed(2));
-    }
-  };
-
   return (
-    <div>
-      {/* Inputs */}
-      <div style={{ marginBottom: "10px" }}>
-        <input
-          type="text"
-          placeholder='Start (e.g. "Taj Mahal")'
-          value={startName}
-          onChange={(e) => setStartName(e.target.value)}
-        />
-        <button onClick={handleStartSearch} style={{ marginLeft: "5px" }}>
-          Set Start
-        </button>
+    <div className="w-full">
 
+      {/* ✅ Toast Container */}
+      <ToastContainer position="top-center" />
+
+      {/* 📱 Mobile Search */}
+      <div className="flex sm:hidden gap-2 mb-2">
         <input
           type="text"
-          placeholder='End (e.g. "Delhi")'
-          value={endName}
-          onChange={(e) => setEndName(e.target.value)}
-          style={{ marginLeft: "10px" }}
+          placeholder="Search location..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="flex-1 px-3 py-2 border rounded-lg"
         />
-        <button onClick={handleEndSearch} style={{ marginLeft: "5px" }}>
-          Set End
+        <button
+          onClick={handleSearch}
+          disabled={!search.trim()}
+          className="bg-blue-600 text-white px-4 rounded-lg disabled:opacity-50"
+        >
+          Go
         </button>
       </div>
 
-      {/* Map */}
-      <MapContainer
-        center={startPos || endPos || [25.4358, 81.8463]}
-        zoom={13}
-        style={{ height: "500px", width: "100%" }}
-      >
-        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+      {/* 🗺️ Map */}
+      <div className="relative w-full h-[350px] sm:h-[500px] rounded-xl overflow-hidden z-30">
 
-        {startPos && <ChangeView center={startPos} />}
+        <MapContainer center={startPos} zoom={7} className="h-full w-full">
+          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
-        {/* Map click sets END */}
-        {startPos && (
-          <EndSelector
-            startPos={startPos}
-            setEndPos={setEndPos}
-            setDistance={setDistance}
+          <FitBounds startPos={startPos} endPos={endPos} />
+          <Marker position={startPos} icon={startIcon} />
+          <LocationSelector setEndPos={setEndPos} />
+
+          {endPos && (
+            <>
+              <Marker
+                position={endPos}
+                icon={endIcon}
+                draggable
+                eventHandlers={{
+                  dragend: (e) => {
+                    const pos = e.target.getLatLng();
+                    setEndPos([pos.lat, pos.lng]);
+                  },
+                }}
+              />
+              <Polyline positions={[startPos, endPos]} />
+            </>
+          )}
+        </MapContainer>
+
+        {/* 💻 Desktop Search */}
+        <div className="hidden sm:flex absolute top-3 left-1/2 -translate-x-1/2 z-[1000] w-[400px] bg-white shadow-lg rounded-full overflow-hidden">
+          <input
+            type="text"
+            placeholder="Search location..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="flex-1 px-5 py-3 outline-none"
           />
+          <button
+            onClick={handleSearch}
+            disabled={!search.trim()}
+            className="bg-blue-600 text-white px-5 disabled:opacity-50"
+          >
+            Search
+          </button>
+        </div>
+
+        {/* 📍 My Location */}
+        <button
+          onClick={() => {
+            navigator.geolocation.getCurrentPosition((pos) => {
+              setEndPos([pos.coords.latitude, pos.coords.longitude]);
+            });
+          }}
+          className="absolute top-3 right-3 sm:top-16 z-[1000] bg-white shadow-md px-3 py-2 rounded-lg text-sm"
+        >
+          📍 My Location
+        </button>
+
+        {/* 💻 Desktop Distance */}
+        {distance && (
+          <div className="hidden sm:flex absolute bottom-4 left-1/2 -translate-x-1/2 bg-white shadow-xl rounded-xl px-6 py-3 items-center gap-3 z-[1000]">
+            <div className="bg-blue-100 text-blue-600 p-2 rounded-full">
+              📍
+            </div>
+            <div>
+              <p className="text-sm text-gray-500">Total Distance</p>
+              <h3 className="text-lg font-bold text-gray-800">
+                {distance} km
+              </h3>
+            </div>
+          </div>
         )}
+      </div>
 
-        {/* Markers */}
-        {startPos && <Marker position={startPos} />}
-        {endPos && <Marker position={endPos} />}
-        {startPos && endPos && <Polyline positions={[startPos, endPos]} />}
-      </MapContainer>
+      {/* 📱 Mobile Distance */}
+      {distance && (
+        <div className="sm:hidden mt-3 w-full bg-white shadow-xl rounded-xl px-4 py-3 flex items-center gap-3">
+          <div className="bg-blue-100 text-blue-600 p-2 rounded-full">
+            📍
+          </div>
+          <div>
+            <p className="text-xs text-gray-500">Total Distance</p>
+            <h3 className="text-base font-bold text-gray-800">
+              {distance} km
+            </h3>
+          </div>
+        </div>
+      )}
 
-      {/* Distance */}
-      {distance && <h3>Distance: {distance} km</h3>}
     </div>
   );
 }

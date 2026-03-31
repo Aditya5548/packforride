@@ -30,19 +30,14 @@ export default async function handler(req, res) {
                 email: req.body.email,
                 tourid: req.body.tourid,
                 tourname: req.body.tourname,
-                tourstartdate: req.body.tourstartdate,
-                tourenddate: req.body.tourenddate,
-                boardingtime: req.body.boardingtime,
                 pickupaddress: req.body.pickupaddress,
+                locationid: req.body.locationid,
                 vehicletype: req.body.vehicletype,
                 noofPeople: req.body.passenger,
-                paymenttype: req.body.paymenttype,
-                remainingamount: req.body.remainingamount,
+                totalamount:req.body.totalamount,
                 userid:req.body.userid,
                 status: "pending",
-                facilities:req.body.facilities,
-                tourslotid:req.body.slotid
-
+                facilities:req.body.facilities
             }
             await BookingModel.create(data);
             return res.status(200).json({ success: true, msg: "Tour Booked Successfully.." });

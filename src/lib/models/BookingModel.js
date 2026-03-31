@@ -7,20 +7,15 @@ const schema = new mongoose.Schema({
     email:{type:String,required:true},
     tourid:{type:String,required:true},
     tourname:{type:String,required:true},
-    tourstartdate:{type:String,required:true},
-    tourenddate:{type:String,required:true},
-    boardingtime:{type:String,required:true},
     pickupaddress:{type:String,required:true},
-    vehicletype:{type:String,required:true},
+    locationid:{type:Array,required:true},
     noofPeople:{type:String,required:true},
-    paymenttype:{type:String,required:true},
-    remainingamount:{type:Number,required:true},
+    totalamount:{type:String,required:true},
     userid:{type:String,required:true},
     status:{type:String,required:true},
-    facilities:{type: Object},
-    tourslotid:{type:String,required:true}
+    facilities:{type: Object}
 },
 { timestamps : true}
 )
-const BookingModel =mongoose.models.bookedTourdata || mongoose.model('bookedTourdata',schema);
+const BookingModel =mongoose.models.bookingpaneldata|| mongoose.model('bookingpaneldata',schema);
 export default BookingModel;
