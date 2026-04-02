@@ -15,7 +15,6 @@ export default async function handler(req, res) {
   await connectDB();
   if (req.method === 'GET') {
     const {city}=req.query;
-    console.log(city)
     let tours;
     try {
       if (city) {
@@ -30,7 +29,6 @@ export default async function handler(req, res) {
       }
     }
     catch (error) {
-      console.log(error)
       return res.status(200).json({ msg: "Error Occured"  });
     }
   }
@@ -51,7 +49,7 @@ export default async function handler(req, res) {
             category: fields.category?.[0],
             image: imgUrl,
             city: fields.city?.[0],
-            tourhostid: "Aditya9377",
+            hostId: "Aditya9377",
            lonlat: [parseFloat(fields.longitute), parseFloat(fields.latitute)],
             services: {transport: fields.transport?.[0],room: fields.room?.[0],fooding: fields.fooding?.[0]},
             bookingcount: 0,
@@ -59,13 +57,11 @@ export default async function handler(req, res) {
             status: "active",
             
           };
-          console.log(Tour)
           const response = await Tourplace.create(Tour);
           return res.status(200).json({ status: 'success', msg: response });
 
         }
         catch (error) {
-          console.log(error)
           return res.status(200).json({ status: 'failed', msg: "image is not uploaded", err: error });
         }
       }

@@ -62,7 +62,6 @@ export default function Home() {
       </div>
     </div>
   }
-  console.log(data)
   return (
     <div className='flex flex-col justify-between h-[100vh]'>
       <ToastContainer />

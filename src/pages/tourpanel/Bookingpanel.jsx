@@ -6,7 +6,7 @@ import { useUser } from "@/context/UserContext";
 import { ToastContainer, toast } from "react-toastify";
 import { useRouter } from 'next/router'
 
-const Bookingpanel = ({ charges, passenger, tourdata, facilities ,locationid}) => {
+const Bookingpanel = ({ charges, passenger, tourdata, facilities ,locationid ,distance}) => {
   const { setPaymentPanel } = useUser();
   const { tourname, _id } = tourdata;
   const [address,setAddress]=useState("")
@@ -40,7 +40,7 @@ const Bookingpanel = ({ charges, passenger, tourdata, facilities ,locationid}) =
       gender,
       email,
       phoneno,
-      totalamount:charges.totalcost+1000,
+      totalamount:charges,
       passenger,
       tourname,
       tourid: _id,
@@ -48,6 +48,7 @@ const Bookingpanel = ({ charges, passenger, tourdata, facilities ,locationid}) =
       locationid: locationid,
       pickupaddress: address,
       facilities: facilities,
+      distance:distance
     };
 
     const response = await axios.post("/api/BookingTour", data);
@@ -181,7 +182,7 @@ const Bookingpanel = ({ charges, passenger, tourdata, facilities ,locationid}) =
                <input type="number" pattern="[0-9]{10}" minLength={10} maxLength={10} placeholder='Phone No' className="outline-none px-5 py-1 w-full" name="phoneno" value={phoneno} onChange={phonenofilter} required />
             </p>
             <p className="flex gap-2 items-center mx-5 px-3 py-1 mt-4">
-              <b>Total Amount:</b> ₹ {charges.totalcost+1000}
+              <b>Total Amount:</b> ₹ {charges}
             </p>      
             <p className="flex justify-center">
     <button
@@ -267,7 +268,7 @@ const Bookingpanel = ({ charges, passenger, tourdata, facilities ,locationid}) =
     {/* Details Box */}
     <div className="bg-white/10 backdrop-blur-md mt-6 px-6 py-4 rounded-xl text-center">
       <p className="text-sm">Amount Paid</p>
-      <h2 className="text-2xl font-bold mt-1">₹ {charges.totalcost+1000}</h2>
+      <h2 className="text-2xl font-bold mt-1">₹ {charges}</h2>
     </div>
 
     {/* Button */}

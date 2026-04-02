@@ -153,7 +153,7 @@ function MapComponent({ startPos }) {
       </div>
 
       {/* 🗺️ Map */}
-      <div className="relative w-full h-[350px] sm:h-[500px] rounded-xl overflow-hidden z-30">
+      <div className="relative w-full h-[350px] sm:h-[500px] rounded-xl overflow-hidden z-0">
         <MapContainer
           center={parsedStartPos}
           zoom={7}

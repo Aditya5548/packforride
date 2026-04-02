@@ -40,9 +40,9 @@ const Countdown = () => {
   };
 
   const colorChange = {
-    hidden: { color: "#111827" },
+    hidden: { color: "#0076fd" },
     visible: {
-      color: "#db63f3",
+      color: "#0076fd",
       transition: { duration: 0.8, delay: 0.2 },
     },
   };
@@ -56,7 +56,7 @@ const Countdown = () => {
   };
 
   return (
-    <section className="bg-gray-100 py-4 md:py-8 font-inter overflow-hidden">
+    <section className="bg-gray-100 py-4 md:py-4 font-inter overflow-hidden">
       <div className="max-w-6xl mx-auto px-6 text-center">
 
         {/* Heading */}
@@ -83,7 +83,7 @@ const Countdown = () => {
           viewport={{ once: true }}
           variants={fadeInUp}
         >
-          <h3 className="text-4xl md:text-6xl text-[#db63f3] font-bold">
+          <h3 className="text-4xl md:text-6xl text-blue-400 font-bold">
             <AnimatedNumber value={5000} suffix="+" />
           </h3>
           <p className="mt-3 text-gray-700">

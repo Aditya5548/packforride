@@ -13,7 +13,6 @@ const AddProduct = () => {
     lon:"",
     lat:"",
   })
-  console.log(data)
   const onChangeHandler = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -53,7 +52,7 @@ const AddProduct = () => {
   },[])
   return (
     <>
-      <form onSubmit={onsubmitHandler} className="flex flex-col pt-5 px-5 sm:pt-12 sm:pl-16">
+      <form onSubmit={onsubmitHandler} className="flex flex-col pt-5 py-5 sm:pt-12 sm:pl-16">
           <div className='flex flex-col items-center py-2 border w-full sm:w-[500px] '>
           <p>Upload Thumbnail</p>
           <label htmlFor="image">

@@ -46,10 +46,12 @@ const Navbar = () => {
         if(token){
             setUsername('')
             localStorage.removeItem('usertoken')
+            window.location.href = "/"; 
         }
         if(session.status=="authenticated"){
             setUsername('')
             signOut()
+            window.location.href = "/"; 
         }
     }
 
@@ -71,7 +73,7 @@ const Navbar = () => {
                                     <p className="flex items-center text-xl md:text-2xl font-medium gap-1 md:gap-2">Hey, {username}<Image src={assets.dropdown} alt="Example image" className='w-[20px] h-[10px] md:w-[25px] md:h-[15px]'/> </p>
                                 
                                 </button>
-                                <div className="dropdown-content">
+                                <div className="dropdown-content z-50">
                                     <button onClick={()=>{setProfilepanel(true)}}>profile</button>
                                     <button onClick={fetchbooking} className='cursor-pointer'>Booked tours</button>
                                     <button onClick={()=>{logout()}} className='cursor-pointer'>Logout</button>
