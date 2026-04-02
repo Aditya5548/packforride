@@ -8,7 +8,7 @@ import { useRouter } from 'next/router'
 
 const Bookingpanel = ({ charges, passenger, tourdata, facilities ,locationid ,distance}) => {
   const { setPaymentPanel } = useUser();
-  const { tourname, _id } = tourdata;
+  const { tourname, _id } = tourdata || {};
   const [address,setAddress]=useState("")
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
