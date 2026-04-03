@@ -160,7 +160,7 @@ if (!id || loading) {
         <Image src={null || data.image} width={400} height={300} alt='' className='border-4 border-white' />
         <div className='self-start text-justify'>
           <p className='text-xl sm:text-2xl font-semibold py-2'>{data.tourname}</p>
-          <p className='pt-3'>{data.description}</p>
+          <p className='pt-3 text-sm md:text-md'>{data.description}</p>
           
 
           <div className='pt-3'>
@@ -281,9 +281,9 @@ if (!id || loading) {
 
             </div>
 
-<div className='pt-2'>
+<div>
             <p className='text-xl font-semibold'>Facilities:</p>
-            <div className="pt-4">
+            <div className="pt-4 text-sm md:text-md">
               <div className="py-1">
                 <h1 className="font-bold">Hassle-Free Transportation:</h1>
                 <p>Enjoy smooth and reliable travel with our well-organized transport services. From pickups to drop-offs, we provide comfortable vehicles and experienced drivers so you can travel stress-free.</p>
@@ -304,27 +304,29 @@ if (!id || loading) {
           </div>
             
           </div>
-          <div className='py-1'>
-            <p className='text-xl font-semibold'>Important Notes :</p>
-            <div className='flex flex-wrap justify-center gap-5 pt-2 text-xs w-9/10'>
+          
+        </div>
+      </div>
+      <ReviewSection tourid={data._id} />
+      <Countdown/>
+      <div className='py-1 bg-gray-100 px-5'>
+            <p className='text-xl md:text-2xl font-semibold'>Important Notes :</p>
+            <div className='flex flex-wrap  gap-5 pt-2 text-sm md:text-md'>
               ➢  All tour timings are in Pack & go platform. <br />
               ➢  For immigration clearance purposes, be sure to allocate 90 minutes before the tour and 60 minutes before your boarding time (upon the tour's completion). <br />
               ➢  Availability of seats is not guaranteed on same-day bookings, please visit the Discover Qatar Transit Tour desk as soon as possible to secure your preferred tour timings. <br />
               ➢  Please make sure to check the last departure time for this tour before moving forward.
             </div>
-          </div>
-          <div className="flex flex-col items-center mt-2">
-            <p className='text-black font-semibold pb-2'>Share this Tour on social Media</p>
+            <div className="flex flex-col items-center my-5">
+            <p className='text-black font-semibold pb-2 text-md md:text-2xl'>Share this Tour on social Media</p>
             <div className='flex'>
               <Image src={assets.facebook_icon} width={50} alt='' />
               <Image src={assets.twitter_icon} width={50} alt='' />
               <Image src={assets.googleplus_icon} width={50} alt='' />
             </div>
           </div>
-        </div>
-      </div>
-      <ReviewSection tourid={data._id} />
-      <Countdown/>
+          </div>
+          
       <Footer />
 
     </> : <>

@@ -6,17 +6,19 @@ import { ToastContainer } from 'react-toastify';
 import { useRouter } from "next/router";
 import { useUser } from "@/context/UserContext";
 import { assets } from "@/assets/assets";
-import { signIn} from "next-auth/react";
+import { signIn , useSession} from "next-auth/react";
 const Userlogin = () => {
   const [email,SetEmail] = useState();
   const [password,SetPassword] = useState();
   const {showhide , setShowhide} = useUser();
   const {showhideoptions, setShowhideoptions} = useUser();
   const {username, setUsername} = useUser();
-  const data ={email,password}
+  const {session ,status }= useSession()
+  console.log(session,status)
   const router = useRouter()
   const logcode = async(e)=>{
     e.preventDefault();
+    const data ={email,password}
     var response =await axios.get('/api/user',{params:data})
     if(response.data.success==true){
       SetEmail("")
@@ -29,6 +31,12 @@ const Userlogin = () => {
       toast.error(response.data.msg)
     }
   }
+
+const googlelogin = async () => {
+    const response = await signIn("google", { redirect: false });
+    console.log("Signin response:", response);
+};
+
   return (
     <>
     <div className='fixed top-0 left-0 z-5 flex justify-center items-center w-screen h-screen bg-gray-100/90'>
@@ -45,13 +53,13 @@ const Userlogin = () => {
           <button className="bg-black text-white py-2 cursor-pointer">Submit</button>
          </form>
          <div className="flex justify-end"><u className="text-blue-600 mr-2 text-lg">Forgot password</u></div>
-          <div className="flex flex-col items-center gap-2 py-1">
+          {/* <div className="flex flex-col items-center gap-2 py-1">
             <h1>Or </h1>
-            <button className="flex gap-3 items-center justify-center w-full border border-gray-400 rounded-lg py-2 cursor-pointer" onClick={() => signIn('google')}>
+            <button className="flex gap-3 items-center justify-center w-full border border-gray-400 rounded-lg py-2 cursor-pointer" onClick={() => googlelogin()}>
               <p className='text-xl'>Continue with </p>
               <Image src={assets.google_icon} width={25} height={25} alt="no image not" />
             </button>
-          </div>
+          </div> */}
       </div>
     </div>
     </>

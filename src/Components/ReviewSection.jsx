@@ -94,20 +94,14 @@ const ReviewSection = ({ tourid }) => {
   };
 
   return (
-    <div>
+    <div className="bg-gray-100">
       {/* ADD BUTTON */}
-      <div className="flex justify-end my-4 mr-5">
-        <button
-          onClick={() => setShowModal(true)}
-          className="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 md:text-lg"
-        >
-          Add Review
-        </button>
-      </div>
+      
 
       {/* SLIDER */}
-      <div className="relative bg-gray-100 py-8 rounded-xl">
+      <div className="relative py-4 md:py-8 rounded-xl">
         {/* LEFT ARROW */}
+
         <button
           onClick={() => scroll("left")}
           className="absolute left-2 top-1/2 -translate-y-1/2 bg-white shadow-lg px-3 py-2 rounded-full z-10"
@@ -168,6 +162,7 @@ const ReviewSection = ({ tourid }) => {
                       </span>
                     )}
                   </p>
+                  
                 </div>
               );
             })
@@ -183,6 +178,7 @@ const ReviewSection = ({ tourid }) => {
         >
           ›
         </button>
+        
 
         {/* DOTS */}
         <div className="flex justify-center mt-4 gap-2">
@@ -195,6 +191,14 @@ const ReviewSection = ({ tourid }) => {
             />
           ))}
         </div>
+      </div>
+      <div className="flex justify-center mr-5">
+        <button
+          onClick={() => setShowModal(true)}
+          className="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 md:text-lg"
+        >
+          Share your Experience
+        </button>
       </div>
 
       {/* MODAL */}

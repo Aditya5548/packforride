@@ -34,12 +34,6 @@ const Navbar = () => {
             }
             cheackuser()
         }
-        if(session.status==="authenticated"){
-        setShowhide(false)
-        const username=session.data.user.name
-        const userfirstname=username.split(" ")[0];
-        setUsername(userfirstname)
-      }
     })
     function logout(){
         const token = localStorage.getItem("usertoken")
@@ -48,11 +42,11 @@ const Navbar = () => {
             localStorage.removeItem('usertoken')
             window.location.href = "/"; 
         }
-        if(session.status=="authenticated"){
-            setUsername('')
-            signOut()
-            window.location.href = "/"; 
-        }
+        // if(session.status=="authenticated"){
+        //     setUsername('')
+        //     signOut()
+        //     window.location.href = "/"; 
+        // }
     }
 
     return (

@@ -62,7 +62,7 @@ export default function HeroSlider() {
   };
 
   return (
-    <div className="relative mx-auto h-[200px] w-4/5 overflow-hidden rounded-2xl shadow-xl md:w-3/4 lg:4/5 md:h-[250px] lg:h-[300px] z-0">
+    <div className="relative mx-auto h-[200px] w-19/20 overflow-hidden rounded-2xl shadow-xl md:w-3/4 lg:4/5 md:h-[250px] lg:h-[300px] z-0">
       {slides.map((slide, index) => (
         <div
           key={index}
@@ -81,8 +81,8 @@ export default function HeroSlider() {
 
           <div className="absolute inset-0 bg-black/45" />
 
-          <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center text-white sm:px-6 md:px-10">
-            <h1 className="max-w-4xl text-md font-bold leading-tight sm:text-xl md:text-5xl">
+          <div className="absolute inset-0 flex flex-col items-center pt-5 md:pt-10  px-4 text-center text-white sm:px-6 md:px-10">
+            <h1 className="max-w-4xl text-md font-bold leading-tight text-3xl md:text-5xl">
               {slide.title}
             </h1>
 

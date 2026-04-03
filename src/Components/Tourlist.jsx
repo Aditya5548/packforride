@@ -92,13 +92,13 @@ const Tourlist = ({ tourplaces }) => {
   return (
     <div>
       <div className="my-10"><Imgslider /></div>
-      <div className="text-center my-5 md:my-10">
+      <div className="text-center my-5 md:my-10 outline-none">
         <form
 
-          className="flex items-center w-4/5 md:w-1/3 mx-auto mt-4 bg-white shadow-md rounded-full overflow-hidden border border-gray-500 focus-within:ring-2 focus-within:ring-black transition"
+          className="flex items-center w-4/5 md:w-1/3 mx-auto mt-4 bg-white shadow-md rounded-md overflow-hidden border border-gray-500 focus-within:ring-2 focus-within:ring-black transition outline-none"
         >
           {/* Icon */}
-          <div className="pl-4 text-gray-500">
+          <div className="pl-4 text-gray-500 outline-none">
             <FiSearch size={20} />
           </div>
 
@@ -114,7 +114,7 @@ const Tourlist = ({ tourplaces }) => {
           {/* Button */}
           <button
             type="submit"
-            className="bg-black text-white px-6 py-3 hover:bg-gray-800 transition-all duration-300 font-medium"
+            className="bg-black text-white px-6 py-3 hover:bg-gray-800 transition-all duration-300 font-medium outline-none"
           >
             Search
           </button>

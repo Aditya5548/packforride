@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     if (req.method === "GET") {
         await connectDB();
         if (req.query.email && req.query.password) {
-            const { email, password } = req.query
+            const { email, password} = req.query;
             if (email && password) {
                 const user = await userModel.findOne({ email:email })
                 if (!user) {
@@ -33,6 +33,7 @@ export default async function handler(req, res) {
 
         } 
         if(req.query.token){
+            console.log("Google",req.query)
             const decoded = jwt.verify(req.query.token, process.env.NEXT_PUBLIC_API_URL)
             const user = await userModel.findById(decoded.id)
             return res.status(200).json({ success: true, username: user.name, userid: user._id, user});

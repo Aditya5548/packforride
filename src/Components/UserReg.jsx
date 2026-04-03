@@ -74,15 +74,15 @@ const UserReg = () => {
               <option value="@outlook.com" />
             </datalist>
             <input className='w-full outline-none border border-gray-200 px-3 py-1' type="password" placeholder='Password' name="password" minLength={8} value={password} onChange={(e) => { SetPassword(e.target.value) }} required />
-            <button className="bg-black text-white py-2 cursor-pointer">Register</button>
+            <button className="bg-black text-white py-2 my-5 cursor-pointer">Register</button>
           </form>
-          <div className="flex flex-col items-center py-2 gap-2">
+          {/* <div className="flex flex-col items-center py-2 gap-2">
             <h1>Or</h1>
             <button className="flex gap-3 items-center justify-center w-full border border-gray-400 rounded-lg py-2 cursor-pointer" onClick={() => signIn('google')}>
               <p className='text-xl'>Continue with </p>
               <Image src={assets.google_icon} width={25} height={25} alt="no image not" />
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
     </>
