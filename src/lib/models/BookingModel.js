@@ -22,8 +22,9 @@ const schema = new mongoose.Schema({
     startdate: { type: Date},
     days: {type: String},
     boardingtime: {type: String},
+    reqdate: { type: Date},
 },
 { timestamps : true}
 )
-const BookingModel =mongoose.models.listofbooking || mongoose.model('listofbooking',schema);
+const BookingModel =mongoose.models.tourbookinglist || mongoose.model('tourbookinglist',schema);
 export default BookingModel;

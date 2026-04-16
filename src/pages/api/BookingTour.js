@@ -45,6 +45,7 @@ export default async function handler(req, res) {
                 vehicletype: "",
                 vehiclenumber: "",
                 startdate: "",
+                reqdate: req.body.boardingdate,
                 days: "",
                 boardingtime: "",
                 status: "pending",

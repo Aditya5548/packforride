@@ -137,6 +137,12 @@ const Tourdetailinfo = ({ data }) => {
                   <span className='font-semibold'>Message:</span>
                   <input type="text" className='border px-2 py-1 rounded' value={messages} onChange={(e) => setMessages(e.target.value)} />
                 </label>
+                <button
+              onClick={handleUpdate}
+              className='bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mt-2'
+            >
+              Update
+            </button>
               </>
             )}
             {["rejected", "cancelled","waiting"].includes(tempStatus) && (
@@ -145,15 +151,16 @@ const Tourdetailinfo = ({ data }) => {
                 <span className='font-semibold'>Reason:</span>
                 <textarea className='border px-2 py-1 rounded' value={messages} onChange={(e) => setMessages(e.target.value)} />
               </label>
-              </>
-            )}
-
-            <button
+              <button
               onClick={handleUpdate}
               className='bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mt-2'
             >
               Update
             </button>
+              </>
+            )}
+
+            
           </div>
         )}
 

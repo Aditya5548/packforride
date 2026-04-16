@@ -6,7 +6,7 @@ import { useUser } from "@/context/UserContext";
 import { ToastContainer, toast } from "react-toastify";
 import { useRouter } from 'next/router'
 
-const Bookingpanel = ({ charges, passenger, tourdata, facilities ,locationid ,distance}) => {
+const Bookingpanel = ({ charges, passenger, tourdata, facilities ,locationid ,distance,boardingdate}) => {
   const { setPaymentPanel } = useUser();
   const { tourname, _id } = tourdata || {};
   const [address,setAddress]=useState("")
@@ -48,7 +48,8 @@ const Bookingpanel = ({ charges, passenger, tourdata, facilities ,locationid ,di
       locationid: locationid,
       pickupaddress: address,
       facilities: facilities,
-      distance:distance
+      distance:distance,
+      boardingdate
     };
 
     const response = await axios.post("/api/BookingTour", data);

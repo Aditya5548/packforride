@@ -57,9 +57,7 @@ const OrderPlaced = () => {
       <Navbar />
 
       <div className="px-4 md:px-8 pb-2">
-        <h1 className="text-xl md:text-3xl font-bold mb-4">
-          My Bookings
-        </h1>
+       
 
         {loading ? (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
