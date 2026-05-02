@@ -56,7 +56,7 @@ const Countdown = () => {
   };
 
   return (
-    <section className="bg-gray-100 py-4 md:py-4 font-inter overflow-hidden">
+    <section className="py-4 md:py-4 font-inter overflow-hidden">
       <div className="max-w-6xl mx-auto px-6 text-center">
 
         {/* Heading */}

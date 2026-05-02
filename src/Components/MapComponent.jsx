@@ -227,8 +227,8 @@ function MapComponent({ startPos }) {
               📍
             </div>
             <div>
-              <p className="text-sm text-gray-500">Total Distance</p>
-              <h3 className="text-lg font-bold text-gray-800">
+              <p className="text-sm text-gray-500">Total Distance from current location</p>
+              <h3 className="text-lg font-bold text-gray-800 text-center">
                 {distance} km
               </h3>
             </div>

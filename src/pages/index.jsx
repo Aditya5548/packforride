@@ -7,7 +7,7 @@ import Navbar from "../Components/Navbar";
 import Footer from '../Components/Footer';
 import Tourlist from '../Components/Tourlist';
 import weblogo from '../assets/weblogo.png';
-import Countdown from '../Components/Countdown.jsx';
+import Recommended from '../Components/Recommended.jsx';
 const fetcher = (url) => axios.get(url).then(res => res.data);
 
 export default function Home() {
@@ -68,6 +68,7 @@ export default function Home() {
       <Navbar />
 
       <Tourlist tourplaces={!data?[]:data} />
+      <Recommended tourplaces={!data?[]:data} />
       <Footer />
     </div>
   );

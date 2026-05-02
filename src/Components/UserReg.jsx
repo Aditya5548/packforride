@@ -44,7 +44,7 @@ const UserReg = () => {
   };
   return (
     <>
-      <div className='fixed top-0 left-0 z-5 flex justify-center items-center w-screen h-screen bg-gray-200/90'>
+      <div className='fixed top-0 left-0 z-20 flex justify-center items-center w-screen h-screen bg-gray-200/60'>
         <ToastContainer />
         <div className='flex flex-col gap-2 w-[90%] md:w-100 border border-gray-400 shadow-lg px-10 pt-2 pb-3 bg-white'>
           <button className="text-2xl text-end cursor-pointer" onClick={() => { setShowhide(false) }}>X</button>

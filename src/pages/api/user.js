@@ -33,7 +33,6 @@ export default async function handler(req, res) {
 
         } 
         if(req.query.token){
-            console.log("Google",req.query)
             const decoded = jwt.verify(req.query.token, process.env.NEXT_PUBLIC_API_URL)
             const user = await userModel.findById(decoded.id)
             return res.status(200).json({ success: true, username: user.name, userid: user._id, user});

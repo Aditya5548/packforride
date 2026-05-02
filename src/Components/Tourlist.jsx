@@ -35,8 +35,6 @@ const Tourlist = ({ tourplaces }) => {
   }
 
 
-
-  // Filter (Search + Category)
   const filteredTours = useMemo(() => {
     return (
       tourplaces?.filter((item) => {
@@ -55,7 +53,6 @@ const Tourlist = ({ tourplaces }) => {
     );
   }, [tourplaces, search, menu]);
 
-  // Pagination logic
   const totalPages = Math.ceil(filteredTours.length / itemsPerPage);
 
   const currentTours = filteredTours.slice(
@@ -76,7 +73,10 @@ const Tourlist = ({ tourplaces }) => {
     return num;
   };
 
-  // Reset page on filter change
+  const getRandomRating = () => {
+  return (Math.random() * (5 - 3.5) + 3.5).toFixed(1);
+};
+
   useEffect(() => {
     setCurrentPage(1);
   }, [search, menu]);
@@ -97,12 +97,11 @@ const Tourlist = ({ tourplaces }) => {
 
           className="flex items-center w-4/5 md:w-1/3 mx-auto mt-4 bg-white shadow-md rounded-md overflow-hidden border border-gray-500 focus-within:ring-2 focus-within:ring-black transition outline-none"
         >
-          {/* Icon */}
+
           <div className="pl-4 text-gray-500 outline-none">
             <FiSearch size={20} />
           </div>
 
-          {/* Input */}
           <input
             type="text"
             placeholder="Search"
@@ -111,7 +110,6 @@ const Tourlist = ({ tourplaces }) => {
             onChange={(e) => setSearch(e.target.value)}
           />
 
-          {/* Button */}
           <button
             type="submit"
             className="bg-black text-white px-6 py-3 hover:bg-gray-800 transition-all duration-300 font-medium outline-none"
@@ -121,7 +119,6 @@ const Tourlist = ({ tourplaces }) => {
         </form>
       </div>
 
-      {/* Category Filter */}
       <div className="flex justify-center gap-6 mb-5 flex-wrap">
         {["All", "Cultural", "Weekend", "Adventure"].map((cat) => (
           <button
@@ -138,7 +135,6 @@ const Tourlist = ({ tourplaces }) => {
         ))}
       </div>
 
-      {/* Cards */}
       <div className="flex flex-wrap justify-center gap-10 mb-8 xl:mx-24">
         {filteredTours.length <= 0 && (
           <div className="text-md font-bold md:text-xl">
@@ -176,7 +172,7 @@ const Tourlist = ({ tourplaces }) => {
             <div className="flex justify-between items-center mt-5 px-5">
               <span className="px-5 py-1 inline-block bg-black text-white text-sm">{item.category}</span>
               <span className="flex items-center gap-2 text-md md:text-xl">
-                <FaStar className="text-yellow-400" /> {item.rating?.toFixed(1) ?? "4.1"}
+                <FaStar className="text-yellow-400" /> {item.rating?.toFixed(1) ?? getRandomRating()}
               </span>
             </div>
 
@@ -214,7 +210,6 @@ const Tourlist = ({ tourplaces }) => {
         ))}
       </div>
 
-      {/* Pagination (ONLY Prev & Next) */}
       {filteredTours.length > 10 && (
         <div className="flex justify-center items-center gap-6 mb-8">
           <button

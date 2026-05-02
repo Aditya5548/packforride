@@ -39,7 +39,7 @@ const googlelogin = async () => {
 
   return (
     <>
-    <div className='fixed top-0 left-0 z-5 flex justify-center items-center w-screen h-screen bg-gray-100/90'>
+    <div className='fixed top-0 left-0 z-20 flex justify-center items-center w-screen h-screen bg-gray-100/60'>
       <ToastContainer/>
       <div className='flex flex-col gap-2 w-[90%] md:w-[400px] border border-gray-400 shadow-lg px-10 py-3 bg-white'>
           <button className="text-2xl text-end " onClick={()=>setShowhide(false)}>X</button> 
@@ -52,14 +52,14 @@ const googlelogin = async () => {
           <input type="password" placeholder='Password' className='w-full outline-none border border-gray-200 px-3 py-1' name="password" value={password} onChange={(e)=>{SetPassword(e.target.value)}} required />
           <button className="bg-black text-white py-2 cursor-pointer">Submit</button>
          </form>
-         <div className="flex justify-end"><u className="text-blue-600 mr-2 text-lg">Forgot password</u></div>
+         <div className="flex justify-end py-5 text-xs"><u className="text-blue-600 mr-2 text-lg">Forgot password</u></div>
           {/* <div className="flex flex-col items-center gap-2 py-1">
             <h1>Or </h1>
             <button className="flex gap-3 items-center justify-center w-full border border-gray-400 rounded-lg py-2 cursor-pointer" onClick={() => googlelogin()}>
               <p className='text-xl'>Continue with </p>
               <Image src={assets.google_icon} width={25} height={25} alt="no image not" />
             </button>
-          </div> */}
+          </div>  */}
       </div>
     </div>
     </>

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Tourdetailinfo from "./Tourdetailinfo";
 import { useUser } from "../../../context/UserContext";
+import { RefreshCcw } from "lucide-react";
 
 const BookedTours = () => {
   const [data, setData] = useState([]);
@@ -22,12 +23,21 @@ const BookedTours = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center pt-5 px-4 sm:pt-12 sm:px-8 lg:px-16 w-full">
-      <h2 className="text-2xl font-bold mb-4 text-center">Booked Tours</h2>
+    <div className="flex flex-col  pt-5 px-4 sm:pt-12 sm:px-8 lg:px-16 w-full">
+      <div className="flex justify-between items-center mb-4">
+  <h2 className="text-lg font-semibold">Booked Tours</h2>
 
-      {/* Desktop / Tablet Table */}
+  <button
+    onClick={fetchdata}
+    className="flex items-center gap-1 text-xs px-2 py-1 bg-gray-100 hover:bg-gray-200 rounded cursor-pointer"
+  >
+    <RefreshCcw size={14} className="hover:rotate-180 transition" />
+    Refresh
+  </button>
+</div>
+      
+
       <div className="hidden sm:block w-full overflow-x-auto border border-gray-300 rounded-lg shadow-sm">
-        {/* Table Header */}
         <div className="min-w-[650px] flex bg-gray-800 text-white font-semibold text-center">
           <p className="w-1/5 py-3 px-4 border-r border-gray-600 text-left">Email</p>
           <p className="w-3/20 py-3 px-2 border-r border-gray-600">No of People</p>
@@ -65,7 +75,7 @@ const BookedTours = () => {
                     setTourdetailinfo(true);
                     setSelecteddata(item);
                   }}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-md"
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-md cursor-pointer"
                 >
                   View
                 </button>

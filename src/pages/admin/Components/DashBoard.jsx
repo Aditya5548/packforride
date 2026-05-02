@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import 'react-toastify/dist/ReactToastify.css'
 import { ToastContainer } from 'react-toastify';
+import { PlusCircle, Map, BookOpen, LogOut, Eye, Package } from "lucide-react";
 
 import AddProduct from './AddProduct';
 import TourData from './TourData';
@@ -28,11 +29,11 @@ const DashBoard = () => {
       </div>
       
       <div className="flex">
-      <div className="flex flex-col pt-10 items-end gap-3 w-[20%] h-[100vh] border-r">
-        <button onClick={()=>changeStatus('add')} className="flex items-center border gap-2 max-w-[150px] px-3 py-2 text-center font-medium cursor-pointer bg-white text-black shadow-[-7px_7px_0px_#000000]"> <Image src={assets.add_icon}  alt=''/> <p className="hidden w-[100px] md:block">Add New</p></button>
-        <button onClick={()=>changeStatus('tourlist')} href={'/admin/bloglist'} className="flex items-center border gap-2 max-w-[150px] px-3 py-2 text-center cursor-pointer bg-white text-black font-medium shadow-[-7px_7px_0px_#000000]"> <Image src={assets.blog_icon}  alt=''/> <p className="hidden w-[100px] md:block">View Tours </p></button>
-        <button onClick={()=>changeStatus('bookings')} href={'/admin/subscriptions'} className="flex items-center border gap-2 max-w-[150px] px-3 py-2 text-center cursor-pointer bg-white text-black font-medium shadow-[-7px_7px_0px_#000000]"> <Image src={assets.email_icon}  alt=''/> <p className="hidden w-[100px] md:block">Bookings</p></button>
-        <button onClick={()=>logout()} href={'/admin/subscriptions'} className="flex items-center border gap-2 max-w-[150px] px-3 py-2 text-center font-medium cursor-pointer bg-white text-black shadow-[-7px_7px_0px_#000000]"> <Image src={assets.logout} width={30} height={20}  alt=''/> <p className="hidden w-[100px] md:block">Logout</p></button>
+      <div className="flex flex-col pt-10 items-end gap-3 w-[20%] min-h-screen border-r">
+        <button onClick={()=>changeStatus('add')} className="flex items-center border gap-2 max-w-[150px] px-3 py-2 text-center font-medium cursor-pointer bg-white text-black shadow-[-7px_7px_0px_#000000]"> <PlusCircle size={20} color="black" /> <p className="hidden w-[100px] md:block">Add New</p></button>
+        <button onClick={()=>changeStatus('tourlist')} href={'/admin/bloglist'} className="flex items-center border gap-2 max-w-[150px] px-3 py-2 text-center cursor-pointer bg-white text-black font-medium shadow-[-7px_7px_0px_#000000]"> <Eye size={20} className="black" /><p className="hidden w-[100px] md:block">View Tours </p></button>
+        <button onClick={()=>changeStatus('bookings')} href={'/admin/subscriptions'} className="flex items-center border gap-2 max-w-[150px] px-3 py-2 text-center cursor-pointer bg-white text-black font-medium shadow-[-7px_7px_0px_#000000]"> <Package size={20}  className="black" /> <p className="hidden w-[100px] md:block">Bookings</p></button>
+        <button onClick={()=>logout()} href={'/admin/subscriptions'} className="flex items-center border gap-2 max-w-[150px] px-3 py-2 text-center font-medium cursor-pointer bg-white text-black shadow-[-7px_7px_0px_#000000]"> <LogOut size={20}  className="black" /> <p className="hidden w-[100px] md:block">Logout</p></button>
       </div>
       <ToastContainer/>
       <div className="flex justify-center w-full">{category==='add'?<AddProduct/>:category==='tourlist'?<TourData/>:category==="bookings"?<BookedTours/>:""}</div>
